@@ -71,7 +71,11 @@ class AccountController extends XFCP_AccountController
         {
             if ($space->banner_path)
             {
-                @unlink(\XF::getRootDirectory() . '/' . $space->banner_path);
+                $oldPath = \XF::getRootDirectory() . '/data/' . preg_replace('#^data/#', '', $space->banner_path);
+                if (file_exists($oldPath))
+                {
+                    @unlink($oldPath);
+                }
                 $space->banner_path = null;
             }
         }
@@ -83,15 +87,18 @@ class AccountController extends XFCP_AccountController
                 $bannerExt = strtolower($bannerUpload->getExtension());
                 if (in_array($bannerExt, ['jpg', 'jpeg', 'png', 'webp', 'gif'], true))
                 {
-                    $bannerRelPath = 'data/user_spaces/banners/' . $visitor->user_id . '_' . \XF::$time . '.' . $bannerExt;
-                    $bannerFullPath = \XF::getRootDirectory() . '/' . $bannerRelPath;
+                    $bannerRelPath = 'user_spaces/banners/' . $visitor->user_id . '_' . \XF::$time . '.' . $bannerExt;
+                    $bannerFullPath = \XF::getRootDirectory() . '/data/' . $bannerRelPath;
 
-                    File::createDirectory(dirname($bannerFullPath), false);
-                    if ($bannerUpload->save($bannerFullPath))
+                    if (File::copyFile($bannerUpload->getTempFile(), $bannerFullPath))
                     {
-                        if ($space->banner_path && file_exists(\XF::getRootDirectory() . '/' . $space->banner_path))
+                        if ($space->banner_path)
                         {
-                            @unlink(\XF::getRootDirectory() . '/' . $space->banner_path);
+                            $oldPath = \XF::getRootDirectory() . '/data/' . preg_replace('#^data/#', '', $space->banner_path);
+                            if (file_exists($oldPath))
+                            {
+                                @unlink($oldPath);
+                            }
                         }
                         $space->banner_path = $bannerRelPath;
                     }
@@ -104,7 +111,11 @@ class AccountController extends XFCP_AccountController
         {
             if ($space->custom_logo_path)
             {
-                @unlink(\XF::getRootDirectory() . '/' . $space->custom_logo_path);
+                $oldPath = \XF::getRootDirectory() . '/data/' . preg_replace('#^data/#', '', $space->custom_logo_path);
+                if (file_exists($oldPath))
+                {
+                    @unlink($oldPath);
+                }
                 $space->custom_logo_path = null;
             }
         }
@@ -116,15 +127,18 @@ class AccountController extends XFCP_AccountController
                 $logoExt = strtolower($logoUpload->getExtension());
                 if (in_array($logoExt, ['jpg', 'jpeg', 'png', 'webp', 'gif'], true))
                 {
-                    $logoRelPath = 'data/user_spaces/logos/' . $visitor->user_id . '_' . \XF::$time . '.' . $logoExt;
-                    $logoFullPath = \XF::getRootDirectory() . '/' . $logoRelPath;
+                    $logoRelPath = 'user_spaces/logos/' . $visitor->user_id . '_' . \XF::$time . '.' . $logoExt;
+                    $logoFullPath = \XF::getRootDirectory() . '/data/' . $logoRelPath;
 
-                    File::createDirectory(dirname($logoFullPath), false);
-                    if ($logoUpload->save($logoFullPath))
+                    if (File::copyFile($logoUpload->getTempFile(), $logoFullPath))
                     {
-                        if ($space->custom_logo_path && file_exists(\XF::getRootDirectory() . '/' . $space->custom_logo_path))
+                        if ($space->custom_logo_path)
                         {
-                            @unlink(\XF::getRootDirectory() . '/' . $space->custom_logo_path);
+                            $oldPath = \XF::getRootDirectory() . '/data/' . preg_replace('#^data/#', '', $space->custom_logo_path);
+                            if (file_exists($oldPath))
+                            {
+                                @unlink($oldPath);
+                            }
                         }
                         $space->custom_logo_path = $logoRelPath;
                         $space->use_forum_avatar = false;
