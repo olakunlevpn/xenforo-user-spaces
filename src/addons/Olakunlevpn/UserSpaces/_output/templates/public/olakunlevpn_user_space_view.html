@@ -108,19 +108,14 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
 
-<xf:if is="$space.valid_links is not empty">
-	<div class="block userSpace-linksBlock">
-		<div class="block-container">
-			<h3 class="block-header">
-				<xf:fa icon="fa-link" /> {{ phrase('olakunlevpn_user_spaces_featured_links') }}
-			</h3>
-			<div class="block-body">
+		<xf:if is="$space.valid_links is not empty">
+			<div class="userSpace-cardDivider"></div>
+
+			<div class="userSpace-cardLinks">
 				<xf:foreach loop="$space.valid_links" value="$link">
 					<a href="{{ link('u/click', $user, {'idx': $link.index}) }}"
-						class="block-row block-row--clickable block-row--separated userSpace-linkCard"
+						class="userSpace-linkCard"
 						target="_blank" rel="noopener nofollow">
 						<div class="contentRow-figure">
 							<div class="contentRow-figureIcon">
@@ -128,7 +123,7 @@
 							</div>
 						</div>
 						<div class="contentRow-main">
-							<h3 class="contentRow-header">{$link.title}</h3>
+							<h4 class="contentRow-header">{$link.title}</h4>
 							<div class="contentRow-minor">{$link.display_url}</div>
 						</div>
 						<div class="contentRow-extra">
@@ -137,9 +132,9 @@
 					</a>
 				</xf:foreach>
 			</div>
-		</div>
+		</xf:if>
 	</div>
-</xf:if>
+</div>
 
 <div class="block block--messages"
 	data-xf-init="lightbox inline-mod"
