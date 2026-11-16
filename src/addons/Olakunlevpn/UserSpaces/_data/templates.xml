@@ -219,6 +219,11 @@
 								@{$user.username}
 							</span>
 							<xf:if contentcheck="true">
+								<xf:contentcheck>
+									<xf:userbanners user="{$user}" tag="span" />
+								</xf:contentcheck>
+							</xf:if>
+							<xf:if contentcheck="true">
 								<span class="userSpace-pill">
 									<xf:contentcheck><xf:usertitle user="{$user}" /></xf:contentcheck>
 								</span>
@@ -571,7 +576,19 @@
 	align-items: center;
 	gap: @xf-paddingSmall;
 	flex-wrap: wrap;
-	margin-top: 2px;
+	margin-top: 4px;
+
+	.userBanner
+	{
+		display: inline-flex;
+		align-items: center;
+		padding: 3px 10px;
+		border-radius: 12px;
+		font-size: @xf-fontSizeSmall;
+		font-weight: @xf-fontWeightHeavy;
+		line-height: inherit;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+	}
 }
 
 .userSpace-pill

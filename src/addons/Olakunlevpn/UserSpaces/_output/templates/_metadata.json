@@ -12,11 +12,11 @@
     "public/olakunlevpn_user_space_view.html": {
         "version_id": 1000070,
         "version_string": "1.0.0",
-        "hash": "48f8ed7ed88f65ac351f33065d05b12c"
+        "hash": "710ebeac03520e25485d9a71d078303e"
     },
     "public/olakunlevpn_user_spaces.less": {
         "version_id": 1000070,
         "version_string": "1.0.0",
-        "hash": "8b1f195de80d83304c744efffbccd0b5"
+        "hash": "8354593e97ad38ab3b7c2365633398d8"
     }
 }
