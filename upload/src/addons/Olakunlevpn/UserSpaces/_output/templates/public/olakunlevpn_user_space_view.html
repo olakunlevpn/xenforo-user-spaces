@@ -26,9 +26,9 @@
 							<span class="userSpace-pill">
 								@{$user.username}
 							</span>
-							<xf:if is="$user.user_title">
+							<xf:if contentcheck="true">
 								<span class="userSpace-pill">
-									{$user.user_title}
+									<xf:contentcheck><xf:usertitle user="{$user}" /></xf:contentcheck>
 								</span>
 							</xf:if>
 							<span class="userSpace-pill">

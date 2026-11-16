@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <phrases>
   <phrase title="olakunlevpn_user_space_not_found" version_id="1000070" version_string="1.0.0"><![CDATA[The requested user space could not be found or is inactive.]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_about_me" version_id="1000070" version_string="1.0.0"><![CDATA[About Me]]></phrase>
   <phrase title="olakunlevpn_user_spaces_bio" version_id="1000070" version_string="1.0.0"><![CDATA[Bio / Tagline]]></phrase>
   <phrase title="olakunlevpn_user_spaces_bio_explain" version_id="1000070" version_string="1.0.0"><![CDATA[A short description or status message displayed under your space header.]]></phrase>
   <phrase title="olakunlevpn_user_spaces_branding_header" version_id="1000070" version_string="1.0.0"><![CDATA[Branding & Imagery]]></phrase>
