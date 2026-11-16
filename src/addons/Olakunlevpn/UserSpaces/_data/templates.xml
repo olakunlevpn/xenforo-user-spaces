@@ -105,7 +105,10 @@
 </xf:form>
 ]]></template>
   <template type="public" title="olakunlevpn_user_space_view" version_id="1000070" version_string="1.0.0"><![CDATA[<xf:title>{$space.title}</xf:title>
-<xf:description>{$space.bio}</xf:description>
+<xf:h1 hidden="true" />
+<xf:if is="$space.bio">
+	<xf:head option="meta_description"><meta name="description" content="{$space.bio|strip_tags}" /></xf:head>
+</xf:if>
 
 <xf:css src="olakunlevpn_user_spaces.less" />
 <xf:macro id="lightbox_macros::setup" arg-canViewAttachments="{$canViewAttachments}" />
@@ -285,7 +288,17 @@
 	</xf:if>
 </div>
 ]]></template>
-  <template type="public" title="olakunlevpn_user_spaces.less" version_id="1000070" version_string="1.0.0"><![CDATA[.userSpace-container
+  <template type="public" title="olakunlevpn_user_spaces.less" version_id="1000070" version_string="1.0.0"><![CDATA[[data-template="olakunlevpn_user_space_view"]
+{
+	.p-breadcrumbs,
+	.p-breadcrumbsWrap,
+	.p-body-header
+	{
+		display: none !important;
+	}
+}
+
+.userSpace-container
 {
 	margin-bottom: @xf-elementSpacer;
 }
