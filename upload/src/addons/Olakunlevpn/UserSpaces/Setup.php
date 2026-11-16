@@ -48,9 +48,45 @@ class Setup extends AbstractSetup
         File::createDirectory($logoDir, false);
     }
 
+    public function installStep2(): void
+    {
+        $notice = \XF::finder(\XF\Finder\NoticeFinder::class)->where('title', 'Claim your personal vanity link')->fetchOne();
+        if (!$notice)
+        {
+            /** @var \XF\Entity\Notice $notice */
+            $notice = \XF::em()->create(\XF\Entity\Notice::class);
+            $notice->title = 'Claim your personal vanity link';
+            $domain = parse_url(\XF::app()->options()->boardUrl, PHP_URL_HOST) ?: 'yourforum.com';
+            $link = \XF::app()->router('public')->buildLink('account/user-space');
+            $notice->message = '<div class="userSpace-notice">'
+                . '<div class="userSpace-notice-title">Claim your personal vanity link: <strong>' . htmlspecialchars($domain) . '/@{name}</strong>!</div>'
+                . '<div class="userSpace-notice-desc">Upload a custom banner, add your bio, and feature your top 3 links in 60 seconds.</div>'
+                . '<div class="userSpace-notice-cta"><a href="' . htmlspecialchars($link) . '" class="button button--cta button--small"><span class="button-text">Customize My Space &rarr;</span></a></div>'
+                . '</div>';
+            $notice->active = 1;
+            $notice->display_order = 1;
+            $notice->dismissible = 1;
+            $notice->user_criteria = [['rule' => 'is_logged_in', 'data' => []]];
+            $notice->page_criteria = [];
+            $notice->display_image = 'avatar';
+            $notice->notice_type = 'block';
+            $notice->display_style = 'primary';
+            $notice->save();
+        }
+    }
+
     public function uninstallStep1(): void
     {
         $schema = $this->schemaManager();
         $schema->dropTable('xf_user_space');
+    }
+
+    public function uninstallStep2(): void
+    {
+        $notice = \XF::finder(\XF\Finder\NoticeFinder::class)->where('title', 'Claim your personal vanity link')->fetchOne();
+        if ($notice)
+        {
+            $notice->delete();
+        }
     }
 }

@@ -1,5 +1,8 @@
 <xf:title>{$space.title}</xf:title>
-<xf:description>{$space.bio}</xf:description>
+<xf:h1 hidden="true" />
+<xf:if is="$space.bio">
+	<xf:head option="meta_description"><meta name="description" content="{$space.bio|strip_tags}" /></xf:head>
+</xf:if>
 
 <xf:css src="olakunlevpn_user_spaces.less" />
 <xf:macro id="lightbox_macros::setup" arg-canViewAttachments="{$canViewAttachments}" />
@@ -8,7 +11,8 @@
 	<div class="userSpace-banner" style="{{ $space.banner_url ? 'background-image: url(\'' . $space.banner_url . '\');' : '' }}"></div>
 
 	<div class="userSpace-cardWrapper">
-		<div class="userSpace-card">
+		<div class="userSpace-cardGroup">
+			<div class="userSpace-card">
 			<div class="userSpace-cardHeader">
 				<div class="userSpace-profile">
 					<div class="userSpace-avatarWrapper">
@@ -17,7 +21,6 @@
 						<xf:else />
 							<img src="{$space.logo_url}" class="avatar avatar--l" alt="{$space.title}" />
 						</xf:if>
-						<span class="userSpace-verifiedBadge" title="{{ phrase('verified') }}"><xf:fa icon="fa-check" /></span>
 					</div>
 
 					<div class="userSpace-identity">
@@ -27,43 +30,69 @@
 								@{$user.username}
 							</span>
 							<xf:if contentcheck="true">
+								<xf:contentcheck>
+									<xf:userbanners user="{$user}" tag="span" />
+								</xf:contentcheck>
+							</xf:if>
+							<xf:if contentcheck="true">
 								<span class="userSpace-pill">
 									<xf:contentcheck><xf:usertitle user="{$user}" /></xf:contentcheck>
 								</span>
 							</xf:if>
-							<span class="userSpace-pill">
-								<xf:fa icon="fa-calendar-alt" /> {{ phrase('joined') }} <xf:date time="{$user.register_date}" />
-							</span>
 						</div>
 					</div>
 				</div>
 
 				<div class="userSpace-actions">
+					<xf:button href="{{ link('u/share', $user) }}"
+						class="button--link userSpace-actionBtn"
+						data-xf-click="overlay"
+						icon="share"
+						title="{{ phrase('olakunlevpn_user_spaces_share_space') }}">
+						<span class="userSpace-actionLabel">{{ phrase('share') }}</span>
+					</xf:button>
+
 					<xf:if is="$isOwner">
-						<xf:button href="{{ link('account/user-space') }}" class="button--cta" icon="edit">
+						<xf:button href="{{ link('account/user-space') }}" class="button--cta userSpace-actionBtn" icon="edit">
 							{{ phrase('edit') }}
 						</xf:button>
 					<xf:else />
-						<xf:if is="$user.canBeReported()">
-							<xf:button href="{{ link('members/report', $user) }}" class="button--link" overlay="true" title="{{ phrase('report_verb') }}">
-								<xf:fa icon="fa-ellipsis-h" />
-							</xf:button>
-						</xf:if>
 						<xf:if is="$xf.visitor.user_id && $xf.visitor.canStartConversationWith($user)">
-							<xf:button href="{{ link('conversations/add', null, {'to': $user.username}) }}" class="button--default">
-								{{ phrase('message') }}
+							<xf:button href="{{ link('conversations/add', null, {'to': $user.username}) }}"
+								class="button--default userSpace-actionBtn"
+								overlay="true"
+								icon="conversation">
+								<span class="userSpace-actionLabel">{{ phrase('message') }}</span>
 							</xf:button>
 						</xf:if>
+
 						<xf:if is="$xf.visitor.user_id">
-							<xf:if is="$xf.visitor.isFollowing($user)">
-								<xf:button href="{{ link('members/unfollow', $user) }}" class="button--link">
-									{{ phrase('unfollow') }}
-								</xf:button>
-							<xf:else />
-								<xf:button href="{{ link('members/follow', $user) }}" class="button--cta" icon="add">
-									{{ phrase('follow') }}
+							<xf:if is="$xf.visitor.canFollowUser($user)">
+								<xf:button href="{{ link('members/follow', $user) }}"
+									class="{{ $xf.visitor.isFollowing($user) ? 'button--link is-following' : 'button--cta' }} userSpace-actionBtn userSpace-followBtn"
+									data-xf-click="switch"
+									data-sk-follow="{{ phrase('follow') }}"
+									data-sk-unfollow="{{ phrase('unfollow') }}"
+									icon="{{ $xf.visitor.isFollowing($user) ? 'confirm' : 'add' }}">
+									<span class="userSpace-actionLabel">{{ $xf.visitor.isFollowing($user) ? phrase('unfollow') : phrase('follow') }}</span>
 								</xf:button>
 							</xf:if>
+						<xf:else />
+							<xf:button href="{{ link('login', null, {'_xfRedirect': $xf.fullUri}) }}"
+								class="button--cta userSpace-actionBtn userSpace-followBtn"
+								data-xf-click="overlay"
+								icon="add">
+								<span class="userSpace-actionLabel">{{ phrase('follow') }}</span>
+							</xf:button>
+						</xf:if>
+
+						<xf:if is="$user.canBeReported()">
+							<xf:button href="{{ link('members/report', $user) }}"
+								class="button--link userSpace-actionBtn"
+								overlay="true"
+								title="{{ phrase('report_verb') }}">
+								<xf:fa icon="fa-ellipsis-h" />
+							</xf:button>
 						</xf:if>
 					</xf:if>
 				</div>
@@ -105,19 +134,12 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
 
-<xf:if is="$space.valid_links is not empty">
-	<div class="block userSpace-linksBlock">
-		<div class="block-container">
-			<h3 class="block-header">
-				<xf:fa icon="fa-link" /> {{ phrase('olakunlevpn_user_spaces_featured_links') }}
-			</h3>
-			<div class="block-body">
+		<xf:if is="$space.valid_links is not empty">
+			<div class="userSpace-cardLinks">
 				<xf:foreach loop="$space.valid_links" value="$link">
 					<a href="{{ link('u/click', $user, {'idx': $link.index}) }}"
-						class="block-row block-row--clickable block-row--separated userSpace-linkCard"
+						class="userSpace-linkCard"
 						target="_blank" rel="noopener nofollow">
 						<div class="contentRow-figure">
 							<div class="contentRow-figureIcon">
@@ -125,7 +147,7 @@
 							</div>
 						</div>
 						<div class="contentRow-main">
-							<h3 class="contentRow-header">{$link.title}</h3>
+							<h4 class="contentRow-header">{$link.title}</h4>
 							<div class="contentRow-minor">{$link.display_url}</div>
 						</div>
 						<div class="contentRow-extra">
@@ -134,47 +156,50 @@
 					</a>
 				</xf:foreach>
 			</div>
-		</div>
-	</div>
-</xf:if>
-
-<div class="block block--messages"
-	data-xf-init="lightbox inline-mod"
-	data-type="profile_post"
-	data-href="{{ link('inline-mod') }}">
-
-	<div class="block-container">
-		<h3 class="block-header">
-			<xf:fa icon="fa-comments" /> {{ phrase('olakunlevpn_user_spaces_feed_header') }}
-		</h3>
-		<div class="block-body js-replyNewMessageContainer">
-			<xf:if is="$user.canPostOnProfile()">
-				<xf:set var="$firstProfilePost" value="{$profilePosts|first}" />
-				<xf:macro id="profile_post_macros::quick_post"
-					arg-user="{$user}"
-					arg-lastDate="{{ $firstProfilePost.post_date ?: 0 }}"
-					arg-containerSelector="< .js-replyNewMessageContainer"
-					arg-attachmentData="{$attachmentData}" />
-			</xf:if>
-
-			<xf:if is="$profilePosts is not empty">
-				<xf:foreach loop="$profilePosts" value="$profilePost">
-					<xf:macro id="profile_post_macros::{{ $profilePost.message_state == 'deleted' ? 'profile_post_deleted' : 'profile_post' }}"
-						arg-attachmentData="{$profilePostAttachData.{$profilePost.profile_post_id}}"
-						arg-profilePost="{$profilePost}" />
-				</xf:foreach>
-			<xf:else />
-				<div class="block-row js-replyNoMessages">{{ phrase('there_no_messages_on_xs_profile_yet', {'name': $user.username}) }}</div>
-			</xf:if>
+		</xf:if>
 		</div>
 	</div>
 
-	<xf:if is="$total > $perPage">
-		<div class="block-outer block-outer--after">
-			<xf:pagenav
-				page="{$page}" perpage="{$perPage}" total="{$total}"
-				link="u" data="{$user}"
-				wrapperclass="block-outer-main" />
+	<div class="userSpace-feedWrapper">
+		<div class="block block--messages"
+			data-xf-init="lightbox inline-mod"
+			data-type="profile_post"
+			data-href="{{ link('inline-mod') }}">
+
+			<div class="block-container">
+				<h3 class="block-header">
+					<xf:fa icon="fa-comments" /> {{ phrase('olakunlevpn_user_spaces_feed_header') }}
+				</h3>
+				<div class="block-body js-replyNewMessageContainer">
+					<xf:if is="$user.canPostOnProfile()">
+						<xf:set var="$firstProfilePost" value="{$profilePosts|first}" />
+						<xf:macro id="profile_post_macros::quick_post"
+							arg-user="{$user}"
+							arg-lastDate="{{ $firstProfilePost.post_date ?: 0 }}"
+							arg-containerSelector="< .js-replyNewMessageContainer"
+							arg-attachmentData="{$attachmentData}" />
+					</xf:if>
+
+					<xf:if is="$profilePosts is not empty">
+						<xf:foreach loop="$profilePosts" value="$profilePost">
+							<xf:macro id="profile_post_macros::{{ $profilePost.message_state == 'deleted' ? 'profile_post_deleted' : 'profile_post' }}"
+								arg-attachmentData="{$profilePostAttachData.{$profilePost.profile_post_id}}"
+								arg-profilePost="{$profilePost}" />
+						</xf:foreach>
+					<xf:else />
+						<div class="block-row js-replyNoMessages">{{ phrase('there_no_messages_on_xs_profile_yet', {'name': $user.username}) }}</div>
+					</xf:if>
+				</div>
+			</div>
+
+			<xf:if is="$total > $perPage">
+				<div class="block-outer block-outer--after">
+					<xf:pagenav
+						page="{$page}" perpage="{$perPage}" total="{$total}"
+						link="u" data="{$user}"
+						wrapperclass="block-outer-main" />
+				</div>
+			</xf:if>
 		</div>
-	</xf:if>
+	</div>
 </div>

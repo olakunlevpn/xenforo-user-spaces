@@ -1,0 +1,9 @@
+{
+    "template": "message_macros",
+    "description": "Add subtle User Space badge under postbit user info",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "preg_replace",
+    "find": "#(<xf:userbanners user=\"\\$user\"[^>]*>)#si",
+    "replace": "$0\n<xf:if is=\"$user.user_id\">\n\t<xf:css src=\"olakunlevpn_user_spaces.less\" />\n\t<div class=\"message-userSpace\">\n\t\t<a href=\"{{ link('u', $user) }}\" class=\"userSpace-postbitBadge\" title=\"{{ phrase('olakunlevpn_user_spaces_visit_space') }}\">\n\t\t\t<xf:fa icon=\"fa-globe\" /> <span class=\"userSpace-postbitBadge-title\">{{ phrase('olakunlevpn_user_spaces_space') }}</span>\n\t\t</a>\n\t</div>\n</xf:if>"
+}

@@ -12,4 +12,28 @@
 	{{ phrase('olakunlevpn_user_spaces_my_space') }}
 </a>]]></replace>
   </modification>
+  <modification type="public" template="member_tooltip" modification_key="olakunlevpn_user_spaces_member_tooltip" description="Add Visit Space button to member hover tooltip" execution_order="10" enabled="1" action="preg_replace">
+    <find><![CDATA[#(<xf:macro id="member_macros::member_action_buttons"[^>]*\/>)#si]]></find>
+    <replace><![CDATA[$0
+<xf:if is="$user.user_id">
+	<xf:css src="olakunlevpn_user_spaces.less" />
+	<div class="buttonGroup">
+		<a href="{{ link('u', $user) }}" class="button button--link userSpace-tooltipBtn">
+			<xf:fa icon="fa-globe" /> <span class="button-text">{{ phrase('olakunlevpn_user_spaces_visit_space') }}</span>
+		</a>
+	</div>
+</xf:if>]]></replace>
+  </modification>
+  <modification type="public" template="message_macros" modification_key="olakunlevpn_user_spaces_message_macros" description="Add subtle User Space badge under postbit user info" execution_order="10" enabled="1" action="preg_replace">
+    <find><![CDATA[#(<xf:userbanners user="\$user"[^>]*>)#si]]></find>
+    <replace><![CDATA[$0
+<xf:if is="$user.user_id">
+	<xf:css src="olakunlevpn_user_spaces.less" />
+	<div class="message-userSpace">
+		<a href="{{ link('u', $user) }}" class="userSpace-postbitBadge" title="{{ phrase('olakunlevpn_user_spaces_visit_space') }}">
+			<xf:fa icon="fa-globe" /> <span class="userSpace-postbitBadge-title">{{ phrase('olakunlevpn_user_spaces_space') }}</span>
+		</a>
+	</div>
+</xf:if>]]></replace>
+  </modification>
 </template_modifications>

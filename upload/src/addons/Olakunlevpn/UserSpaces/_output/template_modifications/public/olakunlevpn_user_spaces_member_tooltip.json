@@ -1,0 +1,9 @@
+{
+    "template": "member_tooltip",
+    "description": "Add Visit Space button to member hover tooltip",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "preg_replace",
+    "find": "#(<xf:macro id=\"member_macros::member_action_buttons\"[^>]*\\/>)#si",
+    "replace": "$0\n<xf:if is=\"$user.user_id\">\n\t<xf:css src=\"olakunlevpn_user_spaces.less\" />\n\t<div class=\"buttonGroup\">\n\t\t<a href=\"{{ link('u', $user) }}\" class=\"button button--link userSpace-tooltipBtn\">\n\t\t\t<xf:fa icon=\"fa-globe\" /> <span class=\"button-text\">{{ phrase('olakunlevpn_user_spaces_visit_space') }}</span>\n\t\t</a>\n\t</div>\n</xf:if>"
+}

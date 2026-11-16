@@ -1,0 +1,82 @@
+<xf:title>{{ phrase('olakunlevpn_user_spaces_share_space') }}: {$space.title}</xf:title>
+
+<xf:js src="vendor/kjua/kjua.min.js" />
+<xf:css src="share_controls.less" />
+
+<div class="block">
+	<div class="block-container">
+		<div class="block-body block-row" style="text-align: center; padding: 25px 20px;">
+			<div class="userSpace-qrContainer" style="display: inline-block; padding: 14px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); border: 1px solid @xf-borderColorLight;">
+				<div id="js-userSpaceQrCode" style="display: flex; align-items: center; justify-content: center; min-width: 170px; min-height: 170px;"></div>
+			</div>
+			
+			<div style="font-size: @xf-fontSizeSmall; color: @xf-textColorMuted; margin: 12px 0 20px 0;">
+				<xf:fa icon="fa-mobile-alt" /> {{ phrase('olakunlevpn_user_spaces_scan_qr_code') }}
+			</div>
+
+			<div style="max-width: 440px; margin: 0 auto; text-align: left;">
+				<xf:macro id="share_page_macros::share_clipboard_input"
+					arg-label="{{ phrase('olakunlevpn_user_spaces_space_url') }}"
+					arg-text="{$vanityUrl}"
+					arg-successText="{{ phrase('copied') }}" />
+			</div>
+
+			<div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid @xf-borderColorLight;">
+				<div class="block-minorHeader" style="margin-bottom: 12px; font-weight: @xf-fontWeightHeavy;">{{ phrase('share_this_content') }}</div>
+				
+				<div class="shareButtons shareButtons--labels" style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+					<a href="https://x.com/intent/tweet?url={$vanityUrl|escape('url')}&amp;text={$space.title|escape('url')}"
+						target="_blank" rel="noopener nofollow"
+						class="shareButtons-button shareButtons-button--brand shareButtons-button--twitter">
+						<xf:fa icon="fab fa-x" />
+						<span>{{ phrase('x_twitter') }}</span>
+					</a>
+					<a href="https://t.me/share/url?url={$vanityUrl|escape('url')}&amp;text={$space.title|escape('url')}"
+						target="_blank" rel="noopener nofollow"
+						class="shareButtons-button shareButtons-button--brand" style="background-color: #24A1DE; color: #ffffff;">
+						<xf:fa icon="fab fa-telegram" />
+						<span>Telegram</span>
+					</a>
+					<a href="https://api.whatsapp.com/send?text={{ ($space.title . ' ' . $vanityUrl)|escape('url') }}"
+						target="_blank" rel="noopener nofollow"
+						class="shareButtons-button shareButtons-button--brand shareButtons-button--whatsApp">
+						<xf:fa icon="fab fa-whatsapp" />
+						<span>{{ phrase('whatsapp') }}</span>
+					</a>
+					<a href="https://reddit.com/submit?url={$vanityUrl|escape('url')}&amp;title={$space.title|escape('url')}"
+						target="_blank" rel="noopener nofollow"
+						class="shareButtons-button shareButtons-button--brand shareButtons-button--reddit">
+						<xf:fa icon="fab fa-reddit-alien" />
+						<span>{{ phrase('reddit') }}</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<xf:js>
+(function() {
+	function renderQr() {
+		const el = document.querySelector('#js-userSpaceQrCode');
+		if (el && typeof kjua === 'function') {
+			const qr = kjua({
+				text: '{$vanityUrl|escape('js')}',
+				render: 'canvas',
+				size: 170,
+				fill: '#1a1a1a',
+				back: '#ffffff',
+				rounded: 80
+			});
+			el.innerHTML = '';
+			el.appendChild(qr);
+		}
+	}
+	if (typeof kjua === 'function') {
+		renderQr();
+	} else {
+		window.addEventListener('load', renderQr);
+		setTimeout(renderQr, 100);
+	}
+})();
+</xf:js>

@@ -7,6 +7,7 @@
   <phrase title="olakunlevpn_user_spaces_branding_header" version_id="1000070" version_string="1.0.0"><![CDATA[Branding & Imagery]]></phrase>
   <phrase title="olakunlevpn_user_spaces_current_banner" version_id="1000070" version_string="1.0.0"><![CDATA[Current Banner]]></phrase>
   <phrase title="olakunlevpn_user_spaces_current_logo" version_id="1000070" version_string="1.0.0"><![CDATA[Current Custom Logo]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_customize_my_space" version_id="1000070" version_string="1.0.0"><![CDATA[Customize My Space]]></phrase>
   <phrase title="olakunlevpn_user_spaces_delete_banner" version_id="1000070" version_string="1.0.0"><![CDATA[Delete current banner]]></phrase>
   <phrase title="olakunlevpn_user_spaces_delete_logo" version_id="1000070" version_string="1.0.0"><![CDATA[Delete custom logo]]></phrase>
   <phrase title="olakunlevpn_user_spaces_featured_links" version_id="1000070" version_string="1.0.0"><![CDATA[Featured Links]]></phrase>
@@ -30,6 +31,7 @@
   <phrase title="olakunlevpn_user_spaces_public_urls_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Share your personal vanity link with anyone across the web.]]></phrase>
   <phrase title="olakunlevpn_user_spaces_scan_qr_code" version_id="1000070" version_string="1.0.0"><![CDATA[Scan with your phone to view this space on mobile]]></phrase>
   <phrase title="olakunlevpn_user_spaces_share_space" version_id="1000070" version_string="1.0.0"><![CDATA[Share Space]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_space" version_id="1000070" version_string="1.0.0"><![CDATA[Space]]></phrase>
   <phrase title="olakunlevpn_user_spaces_space_url" version_id="1000070" version_string="1.0.0"><![CDATA[Vanity URL]]></phrase>
   <phrase title="olakunlevpn_user_spaces_upload_banner" version_id="1000070" version_string="1.0.0"><![CDATA[Upload Cover Banner]]></phrase>
   <phrase title="olakunlevpn_user_spaces_upload_banner_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Upload a wide landscape cover photo (JPG, PNG, or WebP). Recommended 1200x350.]]></phrase>
@@ -39,4 +41,5 @@
   <phrase title="olakunlevpn_user_spaces_use_forum_avatar_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Check this to sync your space logo with your forum avatar.]]></phrase>
   <phrase title="olakunlevpn_user_spaces_views" version_id="1000070" version_string="1.0.0"><![CDATA[Space Views]]></phrase>
   <phrase title="olakunlevpn_user_spaces_views_count" version_id="1000070" version_string="1.0.0"><![CDATA[{count} views]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_visit_space" version_id="1000070" version_string="1.0.0"><![CDATA[Visit Space]]></phrase>
 </phrases>

@@ -112,9 +112,13 @@ class Space extends AbstractController
             $attachmentData = null;
         }
 
+        $boardUrl = rtrim($this->options()->boardUrl, '/');
+        $vanityUrl = $boardUrl . '/@' . rawurlencode($user->username);
+
         $viewParams = [
             'space' => $space,
             'user' => $user,
+            'vanityUrl' => $vanityUrl,
             'profilePosts' => $profilePosts,
             'total' => $total,
             'page' => $page,
@@ -127,6 +131,36 @@ class Space extends AbstractController
         ];
 
         return $this->view('Olakunlevpn\UserSpaces:Space\View', 'olakunlevpn_user_space_view', $viewParams);
+    }
+
+    public function actionShare(ParameterBag $params)
+    {
+        $username = $params->username;
+        if (!$username)
+        {
+            return $this->notFound();
+        }
+
+        /** @var UserSpaceRepository $spaceRepo */
+        $spaceRepo = $this->repository(UserSpaceRepository::class);
+        $space = $spaceRepo->getUserSpaceByUsername($username);
+
+        if (!$space || !$space->User || !$space->is_enabled)
+        {
+            return $this->notFound(\XF::phrase('olakunlevpn_user_space_not_found'));
+        }
+
+        $user = $space->User;
+        $boardUrl = rtrim($this->options()->boardUrl, '/');
+        $vanityUrl = $boardUrl . '/@' . rawurlencode($user->username);
+
+        $viewParams = [
+            'space' => $space,
+            'user' => $user,
+            'vanityUrl' => $vanityUrl,
+        ];
+
+        return $this->view('Olakunlevpn\UserSpaces:Space\Share', 'olakunlevpn_user_space_share', $viewParams);
     }
 
     public function actionClick(ParameterBag $params)

@@ -104,8 +104,93 @@
 	</div>
 </xf:form>
 ]]></template>
+  <template type="public" title="olakunlevpn_user_space_share" version_id="1000070" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('olakunlevpn_user_spaces_share_space') }}: {$space.title}</xf:title>
+
+<xf:js src="vendor/kjua/kjua.min.js" />
+<xf:css src="share_controls.less" />
+
+<div class="block">
+	<div class="block-container">
+		<div class="block-body block-row" style="text-align: center; padding: 25px 20px;">
+			<div class="userSpace-qrContainer" style="display: inline-block; padding: 14px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); border: 1px solid @xf-borderColorLight;">
+				<div id="js-userSpaceQrCode" style="display: flex; align-items: center; justify-content: center; min-width: 170px; min-height: 170px;"></div>
+			</div>
+			
+			<div style="font-size: @xf-fontSizeSmall; color: @xf-textColorMuted; margin: 12px 0 20px 0;">
+				<xf:fa icon="fa-mobile-alt" /> {{ phrase('olakunlevpn_user_spaces_scan_qr_code') }}
+			</div>
+
+			<div style="max-width: 440px; margin: 0 auto; text-align: left;">
+				<xf:macro id="share_page_macros::share_clipboard_input"
+					arg-label="{{ phrase('olakunlevpn_user_spaces_space_url') }}"
+					arg-text="{$vanityUrl}"
+					arg-successText="{{ phrase('copied') }}" />
+			</div>
+
+			<div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid @xf-borderColorLight;">
+				<div class="block-minorHeader" style="margin-bottom: 12px; font-weight: @xf-fontWeightHeavy;">{{ phrase('share_this_content') }}</div>
+				
+				<div class="shareButtons shareButtons--labels" style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+					<a href="https://x.com/intent/tweet?url={$vanityUrl|escape('url')}&amp;text={$space.title|escape('url')}"
+						target="_blank" rel="noopener nofollow"
+						class="shareButtons-button shareButtons-button--brand shareButtons-button--twitter">
+						<xf:fa icon="fab fa-x" />
+						<span>{{ phrase('x_twitter') }}</span>
+					</a>
+					<a href="https://t.me/share/url?url={$vanityUrl|escape('url')}&amp;text={$space.title|escape('url')}"
+						target="_blank" rel="noopener nofollow"
+						class="shareButtons-button shareButtons-button--brand" style="background-color: #24A1DE; color: #ffffff;">
+						<xf:fa icon="fab fa-telegram" />
+						<span>Telegram</span>
+					</a>
+					<a href="https://api.whatsapp.com/send?text={{ ($space.title . ' ' . $vanityUrl)|escape('url') }}"
+						target="_blank" rel="noopener nofollow"
+						class="shareButtons-button shareButtons-button--brand shareButtons-button--whatsApp">
+						<xf:fa icon="fab fa-whatsapp" />
+						<span>{{ phrase('whatsapp') }}</span>
+					</a>
+					<a href="https://reddit.com/submit?url={$vanityUrl|escape('url')}&amp;title={$space.title|escape('url')}"
+						target="_blank" rel="noopener nofollow"
+						class="shareButtons-button shareButtons-button--brand shareButtons-button--reddit">
+						<xf:fa icon="fab fa-reddit-alien" />
+						<span>{{ phrase('reddit') }}</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<xf:js>
+(function() {
+	function renderQr() {
+		const el = document.querySelector('#js-userSpaceQrCode');
+		if (el && typeof kjua === 'function') {
+			const qr = kjua({
+				text: '{$vanityUrl|escape('js')}',
+				render: 'canvas',
+				size: 170,
+				fill: '#1a1a1a',
+				back: '#ffffff',
+				rounded: 80
+			});
+			el.innerHTML = '';
+			el.appendChild(qr);
+		}
+	}
+	if (typeof kjua === 'function') {
+		renderQr();
+	} else {
+		window.addEventListener('load', renderQr);
+		setTimeout(renderQr, 100);
+	}
+})();
+</xf:js>]]></template>
   <template type="public" title="olakunlevpn_user_space_view" version_id="1000070" version_string="1.0.0"><![CDATA[<xf:title>{$space.title}</xf:title>
-<xf:description>{$space.bio}</xf:description>
+<xf:h1 hidden="true" />
+<xf:if is="$space.bio">
+	<xf:head option="meta_description"><meta name="description" content="{$space.bio|strip_tags}" /></xf:head>
+</xf:if>
 
 <xf:css src="olakunlevpn_user_spaces.less" />
 <xf:macro id="lightbox_macros::setup" arg-canViewAttachments="{$canViewAttachments}" />
@@ -114,7 +199,8 @@
 	<div class="userSpace-banner" style="{{ $space.banner_url ? 'background-image: url(\'' . $space.banner_url . '\');' : '' }}"></div>
 
 	<div class="userSpace-cardWrapper">
-		<div class="userSpace-card">
+		<div class="userSpace-cardGroup">
+			<div class="userSpace-card">
 			<div class="userSpace-cardHeader">
 				<div class="userSpace-profile">
 					<div class="userSpace-avatarWrapper">
@@ -123,7 +209,6 @@
 						<xf:else />
 							<img src="{$space.logo_url}" class="avatar avatar--l" alt="{$space.title}" />
 						</xf:if>
-						<span class="userSpace-verifiedBadge" title="{{ phrase('verified') }}"><xf:fa icon="fa-check" /></span>
 					</div>
 
 					<div class="userSpace-identity">
@@ -132,44 +217,70 @@
 							<span class="userSpace-pill">
 								@{$user.username}
 							</span>
-							<xf:if is="$user.user_title">
+							<xf:if contentcheck="true">
+								<xf:contentcheck>
+									<xf:userbanners user="{$user}" tag="span" />
+								</xf:contentcheck>
+							</xf:if>
+							<xf:if contentcheck="true">
 								<span class="userSpace-pill">
-									{$user.user_title}
+									<xf:contentcheck><xf:usertitle user="{$user}" /></xf:contentcheck>
 								</span>
 							</xf:if>
-							<span class="userSpace-pill">
-								<xf:fa icon="fa-calendar-alt" /> {{ phrase('joined') }} <xf:date time="{$user.register_date}" />
-							</span>
 						</div>
 					</div>
 				</div>
 
 				<div class="userSpace-actions">
+					<xf:button href="{{ link('u/share', $user) }}"
+						class="button--link userSpace-actionBtn"
+						data-xf-click="overlay"
+						icon="share"
+						title="{{ phrase('olakunlevpn_user_spaces_share_space') }}">
+						<span class="userSpace-actionLabel">{{ phrase('share') }}</span>
+					</xf:button>
+
 					<xf:if is="$isOwner">
-						<xf:button href="{{ link('account/user-space') }}" class="button--cta" icon="edit">
+						<xf:button href="{{ link('account/user-space') }}" class="button--cta userSpace-actionBtn" icon="edit">
 							{{ phrase('edit') }}
 						</xf:button>
 					<xf:else />
-						<xf:if is="$user.canBeReported()">
-							<xf:button href="{{ link('members/report', $user) }}" class="button--link" overlay="true" title="{{ phrase('report_verb') }}">
-								<xf:fa icon="fa-ellipsis-h" />
-							</xf:button>
-						</xf:if>
 						<xf:if is="$xf.visitor.user_id && $xf.visitor.canStartConversationWith($user)">
-							<xf:button href="{{ link('conversations/add', null, {'to': $user.username}) }}" class="button--default">
-								{{ phrase('message') }}
+							<xf:button href="{{ link('conversations/add', null, {'to': $user.username}) }}"
+								class="button--default userSpace-actionBtn"
+								overlay="true"
+								icon="conversation">
+								<span class="userSpace-actionLabel">{{ phrase('message') }}</span>
 							</xf:button>
 						</xf:if>
+
 						<xf:if is="$xf.visitor.user_id">
-							<xf:if is="$xf.visitor.isFollowing($user)">
-								<xf:button href="{{ link('members/unfollow', $user) }}" class="button--link">
-									{{ phrase('unfollow') }}
-								</xf:button>
-							<xf:else />
-								<xf:button href="{{ link('members/follow', $user) }}" class="button--cta" icon="add">
-									{{ phrase('follow') }}
+							<xf:if is="$xf.visitor.canFollowUser($user)">
+								<xf:button href="{{ link('members/follow', $user) }}"
+									class="{{ $xf.visitor.isFollowing($user) ? 'button--link is-following' : 'button--cta' }} userSpace-actionBtn userSpace-followBtn"
+									data-xf-click="switch"
+									data-sk-follow="{{ phrase('follow') }}"
+									data-sk-unfollow="{{ phrase('unfollow') }}"
+									icon="{{ $xf.visitor.isFollowing($user) ? 'confirm' : 'add' }}">
+									<span class="userSpace-actionLabel">{{ $xf.visitor.isFollowing($user) ? phrase('unfollow') : phrase('follow') }}</span>
 								</xf:button>
 							</xf:if>
+						<xf:else />
+							<xf:button href="{{ link('login', null, {'_xfRedirect': $xf.fullUri}) }}"
+								class="button--cta userSpace-actionBtn userSpace-followBtn"
+								data-xf-click="overlay"
+								icon="add">
+								<span class="userSpace-actionLabel">{{ phrase('follow') }}</span>
+							</xf:button>
+						</xf:if>
+
+						<xf:if is="$user.canBeReported()">
+							<xf:button href="{{ link('members/report', $user) }}"
+								class="button--link userSpace-actionBtn"
+								overlay="true"
+								title="{{ phrase('report_verb') }}">
+								<xf:fa icon="fa-ellipsis-h" />
+							</xf:button>
 						</xf:if>
 					</xf:if>
 				</div>
@@ -211,19 +322,12 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
 
-<xf:if is="$space.valid_links is not empty">
-	<div class="block userSpace-linksBlock">
-		<div class="block-container">
-			<h3 class="block-header">
-				<xf:fa icon="fa-link" /> {{ phrase('olakunlevpn_user_spaces_featured_links') }}
-			</h3>
-			<div class="block-body">
+		<xf:if is="$space.valid_links is not empty">
+			<div class="userSpace-cardLinks">
 				<xf:foreach loop="$space.valid_links" value="$link">
 					<a href="{{ link('u/click', $user, {'idx': $link.index}) }}"
-						class="block-row block-row--clickable block-row--separated userSpace-linkCard"
+						class="userSpace-linkCard"
 						target="_blank" rel="noopener nofollow">
 						<div class="contentRow-figure">
 							<div class="contentRow-figureIcon">
@@ -231,7 +335,7 @@
 							</div>
 						</div>
 						<div class="contentRow-main">
-							<h3 class="contentRow-header">{$link.title}</h3>
+							<h4 class="contentRow-header">{$link.title}</h4>
 							<div class="contentRow-minor">{$link.display_url}</div>
 						</div>
 						<div class="contentRow-extra">
@@ -240,52 +344,65 @@
 					</a>
 				</xf:foreach>
 			</div>
-		</div>
-	</div>
-</xf:if>
-
-<div class="block block--messages"
-	data-xf-init="lightbox inline-mod"
-	data-type="profile_post"
-	data-href="{{ link('inline-mod') }}">
-
-	<div class="block-container">
-		<h3 class="block-header">
-			<xf:fa icon="fa-comments" /> {{ phrase('olakunlevpn_user_spaces_feed_header') }}
-		</h3>
-		<div class="block-body js-replyNewMessageContainer">
-			<xf:if is="$user.canPostOnProfile()">
-				<xf:set var="$firstProfilePost" value="{$profilePosts|first}" />
-				<xf:macro id="profile_post_macros::quick_post"
-					arg-user="{$user}"
-					arg-lastDate="{{ $firstProfilePost.post_date ?: 0 }}"
-					arg-containerSelector="< .js-replyNewMessageContainer"
-					arg-attachmentData="{$attachmentData}" />
-			</xf:if>
-
-			<xf:if is="$profilePosts is not empty">
-				<xf:foreach loop="$profilePosts" value="$profilePost">
-					<xf:macro id="profile_post_macros::{{ $profilePost.message_state == 'deleted' ? 'profile_post_deleted' : 'profile_post' }}"
-						arg-attachmentData="{$profilePostAttachData.{$profilePost.profile_post_id}}"
-						arg-profilePost="{$profilePost}" />
-				</xf:foreach>
-			<xf:else />
-				<div class="block-row js-replyNoMessages">{{ phrase('there_no_messages_on_xs_profile_yet', {'name': $user.username}) }}</div>
-			</xf:if>
+		</xf:if>
 		</div>
 	</div>
 
-	<xf:if is="$total > $perPage">
-		<div class="block-outer block-outer--after">
-			<xf:pagenav
-				page="{$page}" perpage="{$perPage}" total="{$total}"
-				link="u" data="{$user}"
-				wrapperclass="block-outer-main" />
+	<div class="userSpace-feedWrapper">
+		<div class="block block--messages"
+			data-xf-init="lightbox inline-mod"
+			data-type="profile_post"
+			data-href="{{ link('inline-mod') }}">
+
+			<div class="block-container">
+				<h3 class="block-header">
+					<xf:fa icon="fa-comments" /> {{ phrase('olakunlevpn_user_spaces_feed_header') }}
+				</h3>
+				<div class="block-body js-replyNewMessageContainer">
+					<xf:if is="$user.canPostOnProfile()">
+						<xf:set var="$firstProfilePost" value="{$profilePosts|first}" />
+						<xf:macro id="profile_post_macros::quick_post"
+							arg-user="{$user}"
+							arg-lastDate="{{ $firstProfilePost.post_date ?: 0 }}"
+							arg-containerSelector="< .js-replyNewMessageContainer"
+							arg-attachmentData="{$attachmentData}" />
+					</xf:if>
+
+					<xf:if is="$profilePosts is not empty">
+						<xf:foreach loop="$profilePosts" value="$profilePost">
+							<xf:macro id="profile_post_macros::{{ $profilePost.message_state == 'deleted' ? 'profile_post_deleted' : 'profile_post' }}"
+								arg-attachmentData="{$profilePostAttachData.{$profilePost.profile_post_id}}"
+								arg-profilePost="{$profilePost}" />
+						</xf:foreach>
+					<xf:else />
+						<div class="block-row js-replyNoMessages">{{ phrase('there_no_messages_on_xs_profile_yet', {'name': $user.username}) }}</div>
+					</xf:if>
+				</div>
+			</div>
+
+			<xf:if is="$total > $perPage">
+				<div class="block-outer block-outer--after">
+					<xf:pagenav
+						page="{$page}" perpage="{$perPage}" total="{$total}"
+						link="u" data="{$user}"
+						wrapperclass="block-outer-main" />
+				</div>
+			</xf:if>
 		</div>
-	</xf:if>
+	</div>
 </div>
 ]]></template>
-  <template type="public" title="olakunlevpn_user_spaces.less" version_id="1000070" version_string="1.0.0"><![CDATA[.userSpace-container
+  <template type="public" title="olakunlevpn_user_spaces.less" version_id="1000070" version_string="1.0.0"><![CDATA[[data-template="olakunlevpn_user_space_view"]
+{
+	.p-breadcrumbs,
+	.p-breadcrumbsWrap,
+	.p-body-header
+	{
+		display: none !important;
+	}
+}
+
+.userSpace-container
 {
 	margin-bottom: @xf-elementSpacer;
 }
@@ -326,13 +443,39 @@
 	}
 }
 
+.userSpace-feedWrapper
+{
+	padding: 0 @xf-paddingLarge;
+	margin-top: (@xf-elementSpacer * 1.5);
+	position: relative;
+	z-index: 2;
+
+	@media (max-width: @xf-responsiveNarrow)
+	{
+		padding: 0 @xf-paddingMedium;
+		margin-top: @xf-elementSpacer;
+	}
+
+	.block
+	{
+		margin: 0;
+	}
+}
+
+.userSpace-cardGroup
+{
+	border-radius: @xf-borderRadiusLarge;
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+	border: @xf-borderSize solid @xf-borderColorLight;
+	background: @xf-contentBg;
+	overflow: hidden;
+}
+
 .userSpace-card
 {
 	background: @xf-contentBg;
-	border: @xf-borderSize solid @xf-borderColorLight;
-	border-radius: @xf-borderRadiusLarge;
-	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
 	padding: (@xf-paddingLarge * 1.25);
+	position: relative;
 
 	@media (max-width: @xf-responsiveNarrow)
 	{
@@ -383,23 +526,6 @@
 	}
 }
 
-.userSpace-verifiedBadge
-{
-	position: absolute;
-	bottom: -2px;
-	right: -2px;
-	background: #38bdf8;
-	color: #ffffff;
-	border-radius: 50%;
-	width: 22px;
-	height: 22px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 11px;
-	border: 2px solid @xf-contentBg;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
 
 .userSpace-identity
 {
@@ -429,7 +555,19 @@
 	align-items: center;
 	gap: @xf-paddingSmall;
 	flex-wrap: wrap;
-	margin-top: 2px;
+	margin-top: 4px;
+
+	.userBanner
+	{
+		display: inline-flex;
+		align-items: center;
+		padding: 3px 10px;
+		border-radius: 12px;
+		font-size: @xf-fontSizeSmall;
+		font-weight: @xf-fontWeightHeavy;
+		line-height: inherit;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+	}
 }
 
 .userSpace-pill
@@ -451,12 +589,32 @@
 	display: flex;
 	align-items: center;
 	gap: @xf-paddingSmall;
+	flex-wrap: wrap;
 
 	@media (max-width: @xf-responsiveNarrow)
 	{
 		width: 100%;
 		justify-content: flex-start;
 		margin-top: @xf-paddingSmall;
+	}
+
+	.userSpace-actionBtn
+	{
+		border-radius: @xf-borderRadiusMedium;
+		font-weight: @xf-fontWeightHeavy;
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+
+	.userSpace-followBtn.is-following
+	{
+		color: @xf-textColorMuted;
+
+		&:hover
+		{
+			color: @xf-paletteColor1;
+		}
 	}
 }
 
@@ -550,10 +708,14 @@
 	line-height: 1.2;
 }
 
-// Bento Featured Links
-.userSpace-linksBlock
+// Glued Profile Card Links
+.userSpace-cardLinks
 {
-	margin-top: @xf-elementSpacer;
+	display: flex;
+	flex-direction: column;
+	border-top: @xf-borderSize solid @xf-borderColorLight;
+	margin: 0;
+	padding: 0;
 }
 
 .userSpace-linkCard
@@ -561,9 +723,21 @@
 	display: flex;
 	align-items: center;
 	gap: @xf-paddingMedium;
-	padding: @xf-paddingMedium @xf-paddingLarge;
+	padding: @xf-paddingMedium (@xf-paddingLarge * 1.25);
+	background: @xf-contentAltBg;
 	text-decoration: none;
-	transition: all 0.2s ease;
+	border: none;
+	transition: background-color 0.2s ease, color 0.2s ease;
+
+	@media (max-width: @xf-responsiveNarrow)
+	{
+		padding: @xf-paddingMedium;
+	}
+
+	& + .userSpace-linkCard
+	{
+		border-top: @xf-borderSize solid @xf-borderColorLight;
+	}
 
 	.contentRow-figure
 	{
@@ -572,23 +746,24 @@
 
 	.contentRow-figureIcon
 	{
-		width: 44px;
-		height: 44px;
+		width: 42px;
+		height: 42px;
 		border-radius: @xf-borderRadiusMedium;
-		background: @xf-contentAltBg;
+		background: @xf-contentBg;
 		border: @xf-borderSize solid @xf-borderColorLight;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 20px;
+		font-size: 18px;
 		color: @xf-textColor;
-		transition: all 0.2s ease;
-	}
+		transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 
-	&:hover .contentRow-figureIcon
-	{
-		background: @xf-paletteColor4;
-		color: @xf-paletteColor1;
+		i, svg
+		{
+			color: @xf-textColor;
+			fill: @xf-textColor;
+			transition: color 0.2s ease, fill 0.2s ease;
+		}
 	}
 
 	.contentRow-main
@@ -599,10 +774,11 @@
 
 	.contentRow-header
 	{
-		font-size: @xf-fontSizeLarge;
+		font-size: @xf-fontSizeNormal;
 		font-weight: @xf-fontWeightHeavy;
 		margin: 0;
 		color: @xf-textColor;
+		transition: color 0.2s ease;
 	}
 
 	.contentRow-minor
@@ -610,19 +786,152 @@
 		font-size: @xf-fontSizeSmall;
 		color: @xf-textColorMuted;
 		margin-top: 2px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		transition: color 0.2s ease;
 	}
 
 	.contentRow-extra
 	{
 		color: @xf-textColorDimmed;
-		font-size: 16px;
-		transition: transform 0.2s ease;
+		font-size: 14px;
+		padding-right: @xf-paddingSmall;
+		transition: color 0.2s ease, transform 0.2s ease;
+
+		i, svg
+		{
+			color: @xf-textColorDimmed;
+			fill: @xf-textColorDimmed;
+			transition: color 0.2s ease, fill 0.2s ease;
+		}
 	}
 
-	&:hover .contentRow-extra
+	&:hover,
+	&:active
 	{
-		transform: translateX(3px);
-		color: @xf-textColor;
+		background: @xf-paletteColor5;
+
+		.contentRow-header
+		{
+			color: #ffffff !important;
+		}
+
+		.contentRow-minor
+		{
+			color: rgba(255, 255, 255, 0.85) !important;
+		}
+
+		.contentRow-figureIcon
+		{
+			background: rgba(255, 255, 255, 0.2) !important;
+			border-color: rgba(255, 255, 255, 0.35) !important;
+			color: #ffffff !important;
+
+			i, svg
+			{
+				color: #ffffff !important;
+				fill: #ffffff !important;
+			}
+		}
+
+		.contentRow-extra
+		{
+			color: #ffffff !important;
+			transform: translateX(4px);
+
+			i, svg
+			{
+				color: #ffffff !important;
+				fill: #ffffff !important;
+			}
+		}
+	}
+}
+
+// -------------------------------------------------------------
+// Promotional Components: Postbit Badge, Member Tooltip, Notices
+// -------------------------------------------------------------
+
+.message-userSpace
+{
+	margin-top: 5px;
+	margin-bottom: 3px;
+	display: flex;
+	justify-content: center;
+}
+
+.userSpace-postbitBadge
+{
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 2px 8px;
+	font-size: @xf-fontSizeSmallest;
+	font-weight: @xf-fontWeightNormal;
+	line-height: 1.4;
+	color: @xf-textColorMuted;
+	background: @xf-contentAltBg;
+	border: 1px solid @xf-borderColorFaint;
+	border-radius: @xf-borderRadiusSmall;
+	text-decoration: none;
+	transition: all @xf-animationSpeed ease-in-out;
+
+	.fa--xf
+	{
+		font-size: 11px;
+		color: @xf-textColorAccent;
+		transition: transform @xf-animationSpeed ease-in-out;
+	}
+
+	&:hover
+	{
+		color: @xf-textColorAttention;
+		background: @xf-contentHighlightBg;
+		border-color: @xf-borderColorHighlight;
+		text-decoration: none;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+		.fa--xf
+		{
+			transform: scale(1.15);
+		}
+	}
+}
+
+.userSpace-tooltipBtn
+{
+	.fa--xf
+	{
+		margin-right: 4px;
+		color: @xf-textColorAccent;
+	}
+}
+
+.userSpace-notice
+{
+	.userSpace-notice-title
+	{
+		font-size: @xf-fontSizeLarge;
+		font-weight: @xf-fontWeightHeavy;
+		margin-bottom: 4px;
+
+		strong
+		{
+			color: @xf-textColorAttention;
+		}
+	}
+
+	.userSpace-notice-desc
+	{
+		font-size: @xf-fontSizeNormal;
+		margin-bottom: 10px;
+		opacity: 0.9;
+	}
+
+	.userSpace-notice-cta
+	{
+		margin-top: 6px;
 	}
 }
 ]]></template>

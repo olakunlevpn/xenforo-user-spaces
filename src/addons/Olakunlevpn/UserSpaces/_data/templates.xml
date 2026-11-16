@@ -209,7 +209,6 @@
 						<xf:else />
 							<img src="{$space.logo_url}" class="avatar avatar--l" alt="{$space.title}" />
 						</xf:if>
-						<span class="userSpace-verifiedBadge" title="{{ phrase('verified') }}"><xf:fa icon="fa-check" /></span>
 					</div>
 
 					<div class="userSpace-identity">
@@ -228,9 +227,6 @@
 									<xf:contentcheck><xf:usertitle user="{$user}" /></xf:contentcheck>
 								</span>
 							</xf:if>
-							<span class="userSpace-pill">
-								<xf:fa icon="fa-calendar-alt" /> {{ phrase('joined') }} <xf:date time="{$user.register_date}" />
-							</span>
 						</div>
 					</div>
 				</div>
@@ -530,23 +526,6 @@
 	}
 }
 
-.userSpace-verifiedBadge
-{
-	position: absolute;
-	bottom: -2px;
-	right: -2px;
-	background: #38bdf8;
-	color: #ffffff;
-	border-radius: 50%;
-	width: 22px;
-	height: 22px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 11px;
-	border: 2px solid @xf-contentBg;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
 
 .userSpace-identity
 {
@@ -867,6 +846,92 @@
 				fill: #ffffff !important;
 			}
 		}
+	}
+}
+
+// -------------------------------------------------------------
+// Promotional Components: Postbit Badge, Member Tooltip, Notices
+// -------------------------------------------------------------
+
+.message-userSpace
+{
+	margin-top: 5px;
+	margin-bottom: 3px;
+	display: flex;
+	justify-content: center;
+}
+
+.userSpace-postbitBadge
+{
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 2px 8px;
+	font-size: @xf-fontSizeSmallest;
+	font-weight: @xf-fontWeightNormal;
+	line-height: 1.4;
+	color: @xf-textColorMuted;
+	background: @xf-contentAltBg;
+	border: 1px solid @xf-borderColorFaint;
+	border-radius: @xf-borderRadiusSmall;
+	text-decoration: none;
+	transition: all @xf-animationSpeed ease-in-out;
+
+	.fa--xf
+	{
+		font-size: 11px;
+		color: @xf-textColorAccent;
+		transition: transform @xf-animationSpeed ease-in-out;
+	}
+
+	&:hover
+	{
+		color: @xf-textColorAttention;
+		background: @xf-contentHighlightBg;
+		border-color: @xf-borderColorHighlight;
+		text-decoration: none;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+		.fa--xf
+		{
+			transform: scale(1.15);
+		}
+	}
+}
+
+.userSpace-tooltipBtn
+{
+	.fa--xf
+	{
+		margin-right: 4px;
+		color: @xf-textColorAccent;
+	}
+}
+
+.userSpace-notice
+{
+	.userSpace-notice-title
+	{
+		font-size: @xf-fontSizeLarge;
+		font-weight: @xf-fontWeightHeavy;
+		margin-bottom: 4px;
+
+		strong
+		{
+			color: @xf-textColorAttention;
+		}
+	}
+
+	.userSpace-notice-desc
+	{
+		font-size: @xf-fontSizeNormal;
+		margin-bottom: 10px;
+		opacity: 0.9;
+	}
+
+	.userSpace-notice-cta
+	{
+		margin-top: 6px;
 	}
 }
 ]]></template>
