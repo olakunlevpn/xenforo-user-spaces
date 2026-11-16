@@ -54,7 +54,8 @@ class UserSpace extends Entity
             return null;
         }
 
-        return \XF::app()->applyExternalDataUrl($this->banner_path);
+        $relPath = preg_replace('#^data/#', '', $this->banner_path);
+        return \XF::app()->applyExternalDataUrl($relPath);
     }
 
     public function getLogoUrl(): ?string
@@ -64,7 +65,8 @@ class UserSpace extends Entity
             return null;
         }
 
-        return \XF::app()->applyExternalDataUrl($this->custom_logo_path);
+        $relPath = preg_replace('#^data/#', '', $this->custom_logo_path);
+        return \XF::app()->applyExternalDataUrl($relPath);
     }
 
     /**
