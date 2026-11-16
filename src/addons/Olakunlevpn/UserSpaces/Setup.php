@@ -72,6 +72,22 @@ class Setup extends AbstractSetup
             $notice->notice_type = 'block';
             $notice->display_style = 'primary';
             $notice->save();
+
+            $customizedUserIds = $this->db()->fetchAllColumn(
+                "SELECT user_id FROM xf_user_space 
+                 WHERE (bio IS NOT NULL AND bio != '') 
+                    OR (banner_path IS NOT NULL AND banner_path != '')
+                    OR (custom_logo_path IS NOT NULL AND custom_logo_path != '')
+                    OR (link_1_url != '' OR link_2_url != '' OR link_3_url != '')"
+            );
+            foreach ($customizedUserIds as $userId)
+            {
+                $this->db()->insert('xf_notice_dismissed', [
+                    'notice_id' => $notice->notice_id,
+                    'user_id' => $userId,
+                    'dismiss_date' => time(),
+                ], false, false, 'IGNORE');
+            }
         }
     }
 

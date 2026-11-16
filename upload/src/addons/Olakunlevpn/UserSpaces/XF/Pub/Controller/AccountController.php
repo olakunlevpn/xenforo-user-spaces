@@ -14,6 +14,8 @@ class AccountController extends XFCP_AccountController
     {
         $this->assertRegistrationRequired();
 
+        $this->dismissOnboardingNotice();
+
         $visitor = \XF::visitor();
         /** @var UserSpaceRepository $spaceRepo */
         $spaceRepo = $this->repository(UserSpaceRepository::class);
@@ -31,6 +33,8 @@ class AccountController extends XFCP_AccountController
     {
         $this->assertPostOnly();
         $this->assertRegistrationRequired();
+
+        $this->dismissOnboardingNotice();
 
         $visitor = \XF::visitor();
         /** @var UserSpaceRepository $spaceRepo */
@@ -150,5 +154,26 @@ class AccountController extends XFCP_AccountController
         $space->save();
 
         return $this->redirect($this->buildLink('account/user-space'), \XF::phrase('your_changes_have_been_saved'));
+    }
+
+    protected function dismissOnboardingNotice(): void
+    {
+        $visitor = \XF::visitor();
+        if (!$visitor->user_id)
+        {
+            return;
+        }
+
+        /** @var \XF\Entity\Notice|null $notice */
+        $notice = \XF::finder(\XF\Finder\NoticeFinder::class)
+            ->where('title', 'Claim your personal vanity link')
+            ->fetchOne();
+
+        if ($notice)
+        {
+            /** @var \XF\Repository\NoticeRepository $noticeRepo */
+            $noticeRepo = $this->repository(\XF\Repository\NoticeRepository::class);
+            $noticeRepo->dismissNotice($notice, $visitor);
+        }
     }
 }
