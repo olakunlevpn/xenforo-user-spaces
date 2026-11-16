@@ -1,0 +1,11 @@
+{
+    "route_type": "public",
+    "route_prefix": "u",
+    "sub_name": "",
+    "format": ":str<username>/",
+    "build_class": "",
+    "build_method": "",
+    "controller": "Olakunlevpn\\UserSpaces\\Pub\\Controller\\Space",
+    "context": "",
+    "action_prefix": ""
+}

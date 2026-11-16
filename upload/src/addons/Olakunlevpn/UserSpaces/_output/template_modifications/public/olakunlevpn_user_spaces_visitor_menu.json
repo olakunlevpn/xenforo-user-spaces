@@ -1,0 +1,9 @@
+{
+    "template": "account_visitor_menu",
+    "description": "Add My User Space to visitor account menu",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "str_replace",
+    "find": "<!--[XF:account_links:top]-->",
+    "replace": "$0\n<li><a href=\"{{ link('account/user-space') }}\" class=\"menu-linkRow\">{{ phrase('olakunlevpn_user_spaces_my_space') }}</a></li>"
+}

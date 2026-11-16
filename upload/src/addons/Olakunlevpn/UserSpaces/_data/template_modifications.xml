@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template_modifications>
+  <modification type="public" template="account_visitor_menu" modification_key="olakunlevpn_user_spaces_visitor_menu" description="Add My User Space to visitor account menu" execution_order="10" enabled="1" action="str_replace">
+    <find><![CDATA[<!--[XF:account_links:top]-->]]></find>
+    <replace><![CDATA[$0
+<li><a href="{{ link('account/user-space') }}" class="menu-linkRow">{{ phrase('olakunlevpn_user_spaces_my_space') }}</a></li>]]></replace>
+  </modification>
+  <modification type="public" template="account_wrapper" modification_key="olakunlevpn_user_spaces_account_wrapper" description="Add My User Space to account wrapper navigation" execution_order="10" enabled="1" action="str_replace">
+    <find><![CDATA[<!--[XF:settings_links:top]-->]]></find>
+    <replace><![CDATA[$0
+<a class="blockLink {{ $pageSelected == 'user_space' ? 'is-selected' : '' }}" href="{{ link('account/user-space') }}">
+	{{ phrase('olakunlevpn_user_spaces_my_space') }}
+</a>]]></replace>
+  </modification>
+</template_modifications>

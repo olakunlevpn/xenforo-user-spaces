@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<routes>
+  <route route_type="public" route_prefix="u" format=":str&lt;username&gt;/" controller="Olakunlevpn\UserSpaces\Pub\Controller\Space"/>
+</routes>

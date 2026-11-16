@@ -1,0 +1,118 @@
+<xf:title>{$space.title}</xf:title>
+<xf:description>{$space.bio}</xf:description>
+
+<xf:macro id="lightbox_macros::setup" arg-canViewAttachments="{$canViewAttachments}" />
+
+<div class="block">
+	<div class="block-container">
+		<div class="block-body">
+			<div class="memberHeader {{ $space.banner_url ? 'memberHeader--withBanner' : '' }}">
+				<div class="memberHeader-main" style="{{ $space.banner_url ? 'background-image: url(\'' . $space.banner_url . '\');' : '' }}">
+					<div class="memberHeader-mainContent">
+						<span class="memberHeader-avatar">
+							<span class="avatarWrapper">
+								<xf:if is="$space.use_forum_avatar || !$space.logo_url">
+									<xf:avatar user="{$user}" size="l" />
+								<xf:else />
+									<img src="{$space.logo_url}" class="avatar avatar--l" alt="{$space.title}" />
+								</xf:if>
+							</span>
+						</span>
+						<div class="memberHeader-content memberHeader-content--info">
+							<xf:if is="$isOwner">
+								<div class="memberHeader-actionTop">
+									<div class="buttonGroup">
+										<xf:button href="{{ link('account/user-space') }}" class="button--link">
+											<xf:fa icon="fa-edit" /> {{ phrase('edit') }}
+										</xf:button>
+									</div>
+								</div>
+							</xf:if>
+
+							<h1 class="memberHeader-name">
+								<span class="memberHeader-nameWrapper">
+									{$space.title}
+								</span>
+							</h1>
+
+							<div class="memberHeader-blurbContainer">
+								<div class="memberHeader-blurb">
+									<xf:username user="{$user}" rich="true" />
+								</div>
+
+								<xf:if is="$space.bio">
+									<div class="memberHeader-blurb">
+										{$space.bio|nl2br}
+									</div>
+								</xf:if>
+
+								<div class="memberHeader-blurb">
+									<dl class="pairs pairs--inline">
+										<dt>{{ phrase('olakunlevpn_user_spaces_views') }}</dt>
+										<dd>{{ $space.total_views|number }}</dd>
+									</dl>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<xf:if is="$space.valid_links is not empty">
+	<div class="block">
+		<div class="block-container">
+			<div class="block-body">
+				<xf:foreach loop="$space.valid_links" value="$link">
+					<div class="block-row">
+						<xf:button href="{{ link('u/click', $user, {'idx': $link.index}) }}"
+							target="_blank" rel="noopener nofollow"
+							class="button--cta button--fullWidth">
+							<xf:fa icon="{$link.icon}" /> {$link.title}
+						</xf:button>
+					</div>
+				</xf:foreach>
+			</div>
+		</div>
+	</div>
+</xf:if>
+
+<div class="block block--messages"
+	data-xf-init="lightbox inline-mod"
+	data-type="profile_post"
+	data-href="{{ link('inline-mod') }}">
+
+	<div class="block-container">
+		<div class="block-body js-replyNewMessageContainer">
+			<xf:if is="$user.canPostOnProfile()">
+				<xf:set var="$firstProfilePost" value="{$profilePosts|first}" />
+				<xf:macro id="profile_post_macros::quick_post"
+					arg-user="{$user}"
+					arg-lastDate="{{ $firstProfilePost.post_date ?: 0 }}"
+					arg-containerSelector="< .js-replyNewMessageContainer"
+					arg-attachmentData="{$attachmentData}" />
+			</xf:if>
+
+			<xf:if is="$profilePosts is not empty">
+				<xf:foreach loop="$profilePosts" value="$profilePost">
+					<xf:macro id="profile_post_macros::{{ $profilePost.message_state == 'deleted' ? 'profile_post_deleted' : 'profile_post' }}"
+						arg-attachmentData="{$profilePostAttachData.{$profilePost.profile_post_id}}"
+						arg-profilePost="{$profilePost}" />
+				</xf:foreach>
+			<xf:else />
+				<div class="block-row js-replyNoMessages">{{ phrase('there_no_messages_on_xs_profile_yet', {'name': $user.username}) }}</div>
+			</xf:if>
+		</div>
+	</div>
+
+	<xf:if is="$total > $perPage">
+		<div class="block-outer block-outer--after">
+			<xf:pagenav
+				page="{$page}" perpage="{$perPage}" total="{$total}"
+				link="u" data="{$user}"
+				wrapperclass="block-outer-main" />
+		</div>
+	</xf:if>
+</div>
