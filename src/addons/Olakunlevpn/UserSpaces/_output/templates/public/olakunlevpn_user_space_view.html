@@ -43,31 +43,55 @@
 				</div>
 
 				<div class="userSpace-actions">
+					<xf:button href="{{ link('u/share', $user) }}"
+						class="button--link userSpace-actionBtn"
+						data-xf-click="overlay"
+						icon="share"
+						title="{{ phrase('olakunlevpn_user_spaces_share_space') }}">
+						<span class="userSpace-actionLabel">{{ phrase('share') }}</span>
+					</xf:button>
+
 					<xf:if is="$isOwner">
-						<xf:button href="{{ link('account/user-space') }}" class="button--cta" icon="edit">
+						<xf:button href="{{ link('account/user-space') }}" class="button--cta userSpace-actionBtn" icon="edit">
 							{{ phrase('edit') }}
 						</xf:button>
 					<xf:else />
-						<xf:if is="$user.canBeReported()">
-							<xf:button href="{{ link('members/report', $user) }}" class="button--link" overlay="true" title="{{ phrase('report_verb') }}">
-								<xf:fa icon="fa-ellipsis-h" />
-							</xf:button>
-						</xf:if>
 						<xf:if is="$xf.visitor.user_id && $xf.visitor.canStartConversationWith($user)">
-							<xf:button href="{{ link('conversations/add', null, {'to': $user.username}) }}" class="button--default">
-								{{ phrase('message') }}
+							<xf:button href="{{ link('conversations/add', null, {'to': $user.username}) }}"
+								class="button--default userSpace-actionBtn"
+								overlay="true"
+								icon="conversation">
+								<span class="userSpace-actionLabel">{{ phrase('message') }}</span>
 							</xf:button>
 						</xf:if>
+
 						<xf:if is="$xf.visitor.user_id">
-							<xf:if is="$xf.visitor.isFollowing($user)">
-								<xf:button href="{{ link('members/unfollow', $user) }}" class="button--link">
-									{{ phrase('unfollow') }}
-								</xf:button>
-							<xf:else />
-								<xf:button href="{{ link('members/follow', $user) }}" class="button--cta" icon="add">
-									{{ phrase('follow') }}
+							<xf:if is="$xf.visitor.canFollowUser($user)">
+								<xf:button href="{{ link('members/follow', $user) }}"
+									class="{{ $xf.visitor.isFollowing($user) ? 'button--link is-following' : 'button--cta' }} userSpace-actionBtn userSpace-followBtn"
+									data-xf-click="switch"
+									data-sk-follow="{{ phrase('follow') }}"
+									data-sk-unfollow="{{ phrase('unfollow') }}"
+									icon="{{ $xf.visitor.isFollowing($user) ? 'confirm' : 'add' }}">
+									<span class="userSpace-actionLabel">{{ $xf.visitor.isFollowing($user) ? phrase('unfollow') : phrase('follow') }}</span>
 								</xf:button>
 							</xf:if>
+						<xf:else />
+							<xf:button href="{{ link('login', null, {'_xfRedirect': $xf.fullUri}) }}"
+								class="button--cta userSpace-actionBtn userSpace-followBtn"
+								data-xf-click="overlay"
+								icon="add">
+								<span class="userSpace-actionLabel">{{ phrase('follow') }}</span>
+							</xf:button>
+						</xf:if>
+
+						<xf:if is="$user.canBeReported()">
+							<xf:button href="{{ link('members/report', $user) }}"
+								class="button--link userSpace-actionBtn"
+								overlay="true"
+								title="{{ phrase('report_verb') }}">
+								<xf:fa icon="fa-ellipsis-h" />
+							</xf:button>
 						</xf:if>
 					</xf:if>
 				</div>
