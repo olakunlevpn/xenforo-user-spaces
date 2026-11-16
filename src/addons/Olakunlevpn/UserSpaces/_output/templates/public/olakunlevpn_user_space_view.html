@@ -11,7 +11,8 @@
 	<div class="userSpace-banner" style="{{ $space.banner_url ? 'background-image: url(\'' . $space.banner_url . '\');' : '' }}"></div>
 
 	<div class="userSpace-cardWrapper">
-		<div class="userSpace-card">
+		<div class="userSpace-cardGroup">
+			<div class="userSpace-card">
 			<div class="userSpace-cardHeader">
 				<div class="userSpace-profile">
 					<div class="userSpace-avatarWrapper">
@@ -110,8 +111,6 @@
 		</div>
 
 		<xf:if is="$space.valid_links is not empty">
-			<div class="userSpace-cardDivider"></div>
-
 			<div class="userSpace-cardLinks">
 				<xf:foreach loop="$space.valid_links" value="$link">
 					<a href="{{ link('u/click', $user, {'idx': $link.index}) }}"
@@ -133,6 +132,7 @@
 				</xf:foreach>
 			</div>
 		</xf:if>
+		</div>
 	</div>
 </div>
 
