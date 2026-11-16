@@ -86,10 +86,14 @@ class UserSpace extends Entity
 
             if ($title !== '' && $url !== '')
             {
+                $displayUrl = preg_replace('#^https?://(www\.)?#i', '', $url);
+                $displayUrl = rtrim((string)$displayUrl, '/');
+
                 $links[] = [
                     'index' => $i,
                     'title' => $title,
                     'url' => $url,
+                    'display_url' => $displayUrl,
                     'icon' => $this->detectLinkIcon($url)
                 ];
             }

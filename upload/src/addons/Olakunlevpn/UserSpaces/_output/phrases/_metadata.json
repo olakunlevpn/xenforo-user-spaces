@@ -47,6 +47,18 @@
         "version_string": "1.0.0",
         "hash": "de6f7f0c4478e695ffefa1e1668a90b2"
     },
+    "olakunlevpn_user_spaces_featured_links.txt": {
+        "global_cache": false,
+        "version_id": 1000070,
+        "version_string": "1.0.0",
+        "hash": "21bbf02e8b2e41c9716956b51dab0bda"
+    },
+    "olakunlevpn_user_spaces_feed_header.txt": {
+        "global_cache": false,
+        "version_id": 1000070,
+        "version_string": "1.0.0",
+        "hash": "5a808f73943c07579d712eaf02382447"
+    },
     "olakunlevpn_user_spaces_general_settings.txt": {
         "global_cache": false,
         "version_id": 1000070,

@@ -1,6 +1,7 @@
 <xf:title>{$space.title}</xf:title>
 <xf:description>{$space.bio}</xf:description>
 
+<xf:css src="member.less" />
 <xf:macro id="lightbox_macros::setup" arg-canViewAttachments="{$canViewAttachments}" />
 
 <div class="block">
@@ -22,8 +23,8 @@
 							<xf:if is="$isOwner">
 								<div class="memberHeader-actionTop">
 									<div class="buttonGroup">
-										<xf:button href="{{ link('account/user-space') }}" class="button--link">
-											<xf:fa icon="fa-edit" /> {{ phrase('edit') }}
+										<xf:button href="{{ link('account/user-space') }}" class="button--link" icon="edit">
+											{{ phrase('edit') }}
 										</xf:button>
 									</div>
 								</div>
@@ -45,14 +46,30 @@
 										{$space.bio|nl2br}
 									</div>
 								</xf:if>
-
-								<div class="memberHeader-blurb">
-									<dl class="pairs pairs--inline">
-										<dt>{{ phrase('olakunlevpn_user_spaces_views') }}</dt>
-										<dd>{{ $space.total_views|number }}</dd>
-									</dl>
-								</div>
 							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="memberHeader-content">
+					<div class="memberHeader-stats">
+						<div class="pairJustifier">
+							<dl class="pairs pairs--rows pairs--rows--centered">
+								<dt>{{ phrase('messages') }}</dt>
+								<dd>{$user.message_count|number}</dd>
+							</dl>
+							<dl class="pairs pairs--rows pairs--rows--centered">
+								<dt>{{ phrase('reaction_score') }}</dt>
+								<dd>{$user.reaction_score|number}</dd>
+							</dl>
+							<dl class="pairs pairs--rows pairs--rows--centered">
+								<dt>{{ phrase('trophy_points') }}</dt>
+								<dd>{$user.trophy_points|number}</dd>
+							</dl>
+							<dl class="pairs pairs--rows pairs--rows--centered">
+								<dt>{{ phrase('olakunlevpn_user_spaces_views') }}</dt>
+								<dd>{{ $space.total_views|number }}</dd>
+							</dl>
 						</div>
 					</div>
 				</div>
@@ -64,14 +81,32 @@
 <xf:if is="$space.valid_links is not empty">
 	<div class="block">
 		<div class="block-container">
+			<h3 class="block-header">
+				<xf:fa icon="fa-link" /> {{ phrase('olakunlevpn_user_spaces_featured_links') }}
+			</h3>
 			<div class="block-body">
 				<xf:foreach loop="$space.valid_links" value="$link">
-					<div class="block-row">
-						<xf:button href="{{ link('u/click', $user, {'idx': $link.index}) }}"
-							target="_blank" rel="noopener nofollow"
-							class="button--cta button--fullWidth">
-							<xf:fa icon="{$link.icon}" /> {$link.title}
-						</xf:button>
+					<div class="block-row block-row--clickable block-row--separated fauxBlockLink">
+						<div class="contentRow contentRow--alignMiddle">
+							<div class="contentRow-figure">
+								<span class="avatar avatar--s avatar--default avatar--default--dynamic" style="display: flex; align-items: center; justify-content: center; font-size: 16px;">
+									<xf:fa icon="{$link.icon}" />
+								</span>
+							</div>
+							<div class="contentRow-main">
+								<h3 class="contentRow-header">
+									<a href="{{ link('u/click', $user, {'idx': $link.index}) }}" class="fauxBlockLink-blockLink" target="_blank" rel="noopener nofollow">
+										{$link.title}
+									</a>
+								</h3>
+								<div class="contentRow-minor contentRow-muted">
+									{$link.display_url}
+								</div>
+							</div>
+							<div class="contentRow-extra">
+								<xf:fa icon="fa-external-link-alt" class="u-muted" />
+							</div>
+						</div>
 					</div>
 				</xf:foreach>
 			</div>
@@ -85,6 +120,9 @@
 	data-href="{{ link('inline-mod') }}">
 
 	<div class="block-container">
+		<h3 class="block-header">
+			<xf:fa icon="fa-comments" /> {{ phrase('olakunlevpn_user_spaces_feed_header') }}
+		</h3>
 		<div class="block-body js-replyNewMessageContainer">
 			<xf:if is="$user.canPostOnProfile()">
 				<xf:set var="$firstProfilePost" value="{$profilePosts|first}" />
