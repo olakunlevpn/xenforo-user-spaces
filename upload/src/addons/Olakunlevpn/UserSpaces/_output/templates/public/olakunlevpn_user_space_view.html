@@ -24,21 +24,16 @@
 						<h1 class="userSpace-name">{$space.title}</h1>
 						<div class="userSpace-subRow">
 							<span class="userSpace-pill">
-								<xf:fa icon="fa-eye" /> {{ phrase('olakunlevpn_user_spaces_views_count', {'count': $space.total_views|number}) }}
+								@{$user.username}
 							</span>
-
-							<xf:if is="$space.valid_links is not empty">
-								<div class="userSpace-socialIcons">
-									<xf:foreach loop="$space.valid_links" value="$link">
-										<a href="{{ link('u/click', $user, {'idx': $link.index}) }}"
-											class="userSpace-socialIcon"
-											target="_blank" rel="noopener nofollow"
-											title="{$link.title}">
-											<xf:fa icon="{$link.icon}" />
-										</a>
-									</xf:foreach>
-								</div>
+							<xf:if is="$user.user_title">
+								<span class="userSpace-pill">
+									{$user.user_title}
+								</span>
 							</xf:if>
+							<span class="userSpace-pill">
+								<xf:fa icon="fa-calendar-alt" /> {{ phrase('joined') }} <xf:date time="{$user.register_date}" />
+							</span>
 						</div>
 					</div>
 				</div>
@@ -78,7 +73,7 @@
 
 			<div class="userSpace-cardBody">
 				<div class="userSpace-about">
-					<h4 class="userSpace-sectionTitle">{{ phrase('about') }}</h4>
+					<h4 class="userSpace-sectionTitle">{{ phrase('olakunlevpn_user_spaces_about_me') }}</h4>
 					<div class="userSpace-bio">
 						<xf:if is="$space.bio">
 							{$space.bio|nl2br}

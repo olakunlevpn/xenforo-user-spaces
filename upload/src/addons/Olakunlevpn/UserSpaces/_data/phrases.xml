@@ -34,4 +34,5 @@
   <phrase title="olakunlevpn_user_spaces_use_forum_avatar" version_id="1000070" version_string="1.0.0"><![CDATA[Use forum avatar as space logo]]></phrase>
   <phrase title="olakunlevpn_user_spaces_use_forum_avatar_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Check this to sync your space logo with your forum avatar.]]></phrase>
   <phrase title="olakunlevpn_user_spaces_views" version_id="1000070" version_string="1.0.0"><![CDATA[Space Views]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_views_count" version_id="1000070" version_string="1.0.0"><![CDATA[{count} views]]></phrase>
 </phrases>
