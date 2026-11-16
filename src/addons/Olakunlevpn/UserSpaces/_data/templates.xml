@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+  <template type="public" title="olakunlevpn_user_space_edit" version_id="1000070" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('olakunlevpn_user_spaces_manage_my_space') }}</xf:title>
+
+<xf:wrap template="account_wrapper" />
+
+<xf:form action="{{ link('account/user-space/save') }}" ajax="true" upload="true" class="block" data-force-flash-message="true">
+	<div class="block-container">
+		<div class="block-body">
+			<xf:formrow label="{{ phrase('olakunlevpn_user_spaces_public_urls') }}" explain="{{ phrase('olakunlevpn_user_spaces_public_urls_explain') }}">
+				<div class="buttonGroup">
+					<xf:button href="{{ link('u', $xf.visitor) }}" target="_blank" class="button--link">
+						<xf:fa icon="fa-external-link-alt" /> {{ link('canonical:u', $xf.visitor) }}
+					</xf:button>
+				</div>
+			</xf:formrow>
+
+			<h2 class="block-formSectionHeader"><span class="block-formSectionHeader-aligner">{{ phrase('olakunlevpn_user_spaces_general_settings') }}</span></h2>
+
+			<xf:textboxrow name="space_name" value="{$space.space_name}"
+				label="{{ phrase('olakunlevpn_user_spaces_name') }}"
+				explain="{{ phrase('olakunlevpn_user_spaces_name_explain') }}"
+				placeholder="{$xf.visitor.username}"
+				maxlength="100" />
+
+			<xf:textarearow name="bio" value="{$space.bio}"
+				label="{{ phrase('olakunlevpn_user_spaces_bio') }}"
+				explain="{{ phrase('olakunlevpn_user_spaces_bio_explain') }}"
+				rows="3"
+				autosize="true"
+				maxlength="500" />
+
+			<h2 class="block-formSectionHeader"><span class="block-formSectionHeader-aligner">{{ phrase('olakunlevpn_user_spaces_branding_header') }}</span></h2>
+
+			<xf:if is="$space.banner_path">
+				<xf:formrow label="{{ phrase('olakunlevpn_user_spaces_current_banner') }}">
+					<img src="{$space.banner_url}" style="max-width: 100%; max-height: 140px; border-radius: 4px; object-fit: cover;" /><br />
+					<xf:checkbox standalone="true">
+						<xf:option name="remove_banner" value="1" label="{{ phrase('olakunlevpn_user_spaces_delete_banner') }}" />
+					</xf:checkbox>
+				</xf:formrow>
+			</xf:if>
+
+			<xf:uploadrow name="banner" accept=".gif,.jpeg,.jpg,.png,.webp"
+				label="{{ phrase('olakunlevpn_user_spaces_upload_banner') }}"
+				explain="{{ phrase('olakunlevpn_user_spaces_upload_banner_explain') }}" />
+
+			<xf:checkboxrow>
+				<xf:option name="use_forum_avatar" value="1" selected="{$space.use_forum_avatar}"
+					label="{{ phrase('olakunlevpn_user_spaces_use_forum_avatar') }}"
+					explain="{{ phrase('olakunlevpn_user_spaces_use_forum_avatar_explain') }}" />
+			</xf:checkboxrow>
+
+			<xf:if is="$space.custom_logo_path">
+				<xf:formrow label="{{ phrase('olakunlevpn_user_spaces_current_logo') }}">
+					<img src="{$space.logo_url}" class="avatar avatar--m" alt="{$space.title}" /><br />
+					<xf:checkbox standalone="true">
+						<xf:option name="remove_logo" value="1" label="{{ phrase('olakunlevpn_user_spaces_delete_logo') }}" />
+					</xf:checkbox>
+				</xf:formrow>
+			</xf:if>
+
+			<xf:uploadrow name="custom_logo" accept=".gif,.jpeg,.jpg,.png,.webp"
+				label="{{ phrase('olakunlevpn_user_spaces_upload_logo') }}"
+				explain="{{ phrase('olakunlevpn_user_spaces_upload_logo_explain') }}" />
+
+			<h2 class="block-formSectionHeader"><span class="block-formSectionHeader-aligner">{{ phrase('olakunlevpn_user_spaces_links_header') }}</span></h2>
+
+			<xf:textboxrow name="link_1_title" value="{$space.link_1_title}"
+				label="{{ phrase('olakunlevpn_user_spaces_link_1_title') }}"
+				placeholder="{{ phrase('olakunlevpn_user_spaces_link_title_example1') }}"
+				maxlength="100" />
+			<xf:textboxrow name="link_1_url" value="{$space.link_1_url}"
+				label="{{ phrase('olakunlevpn_user_spaces_link_1_url') }}"
+				placeholder="https://..."
+				type="url"
+				maxlength="255" />
+
+			<hr class="formRowSep" />
+
+			<xf:textboxrow name="link_2_title" value="{$space.link_2_title}"
+				label="{{ phrase('olakunlevpn_user_spaces_link_2_title') }}"
+				placeholder="{{ phrase('olakunlevpn_user_spaces_link_title_example2') }}"
+				maxlength="100" />
+			<xf:textboxrow name="link_2_url" value="{$space.link_2_url}"
+				label="{{ phrase('olakunlevpn_user_spaces_link_2_url') }}"
+				placeholder="https://..."
+				type="url"
+				maxlength="255" />
+
+			<hr class="formRowSep" />
+
+			<xf:textboxrow name="link_3_title" value="{$space.link_3_title}"
+				label="{{ phrase('olakunlevpn_user_spaces_link_3_title') }}"
+				placeholder="{{ phrase('olakunlevpn_user_spaces_link_title_example3') }}"
+				maxlength="100" />
+			<xf:textboxrow name="link_3_url" value="{$space.link_3_url}"
+				label="{{ phrase('olakunlevpn_user_spaces_link_3_url') }}"
+				placeholder="https://..."
+				type="url"
+				maxlength="255" />
+		</div>
+		<xf:submitrow icon="save" />
+	</div>
+</xf:form>
+]]></template>
+  <template type="public" title="olakunlevpn_user_space_view" version_id="1000070" version_string="1.0.0"><![CDATA[<xf:title>{$space.title}</xf:title>
+<xf:description>{$space.bio}</xf:description>
+
+<xf:css src="olakunlevpn_user_spaces.less" />
+<xf:macro id="lightbox_macros::setup" arg-canViewAttachments="{$canViewAttachments}" />
+
+<div class="userSpace-container">
+	<div class="userSpace-banner" style="{{ $space.banner_url ? 'background-image: url(\'' . $space.banner_url . '\');' : '' }}"></div>
+
+	<div class="userSpace-cardWrapper">
+		<div class="userSpace-card">
+			<div class="userSpace-cardHeader">
+				<div class="userSpace-profile">
+					<div class="userSpace-avatarWrapper">
+						<xf:if is="$space.use_forum_avatar || !$space.logo_url">
+							<xf:avatar user="{$user}" size="l" />
+						<xf:else />
+							<img src="{$space.logo_url}" class="avatar avatar--l" alt="{$space.title}" />
+						</xf:if>
+						<span class="userSpace-verifiedBadge" title="{{ phrase('verified') }}"><xf:fa icon="fa-check" /></span>
+					</div>
+
+					<div class="userSpace-identity">
+						<h1 class="userSpace-name">{$space.title}</h1>
+						<div class="userSpace-subRow">
+							<span class="userSpace-pill">
+								@{$user.username}
+							</span>
+							<xf:if contentcheck="true">
+								<span class="userSpace-pill">
+									<xf:contentcheck><xf:usertitle user="{$user}" /></xf:contentcheck>
+								</span>
+							</xf:if>
+							<span class="userSpace-pill">
+								<xf:fa icon="fa-calendar-alt" /> {{ phrase('joined') }} <xf:date time="{$user.register_date}" />
+							</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="userSpace-actions">
+					<xf:if is="$isOwner">
+						<xf:button href="{{ link('account/user-space') }}" class="button--cta" icon="edit">
+							{{ phrase('edit') }}
+						</xf:button>
+					<xf:else />
+						<xf:if is="$user.canBeReported()">
+							<xf:button href="{{ link('members/report', $user) }}" class="button--link" overlay="true" title="{{ phrase('report_verb') }}">
+								<xf:fa icon="fa-ellipsis-h" />
+							</xf:button>
+						</xf:if>
+						<xf:if is="$xf.visitor.user_id && $xf.visitor.canStartConversationWith($user)">
+							<xf:button href="{{ link('conversations/add', null, {'to': $user.username}) }}" class="button--default">
+								{{ phrase('message') }}
+							</xf:button>
+						</xf:if>
+						<xf:if is="$xf.visitor.user_id">
+							<xf:if is="$xf.visitor.isFollowing($user)">
+								<xf:button href="{{ link('members/unfollow', $user) }}" class="button--link">
+									{{ phrase('unfollow') }}
+								</xf:button>
+							<xf:else />
+								<xf:button href="{{ link('members/follow', $user) }}" class="button--cta" icon="add">
+									{{ phrase('follow') }}
+								</xf:button>
+							</xf:if>
+						</xf:if>
+					</xf:if>
+				</div>
+			</div>
+
+			<hr class="userSpace-divider" />
+
+			<div class="userSpace-cardBody">
+				<div class="userSpace-about">
+					<h4 class="userSpace-sectionTitle">{{ phrase('olakunlevpn_user_spaces_about_me') }}</h4>
+					<div class="userSpace-bio">
+						<xf:if is="$space.bio">
+							{$space.bio|nl2br}
+						<xf:else />
+							<span class="u-muted">{{ phrase('no_additional_information_available') }}</span>
+						</xf:if>
+					</div>
+				</div>
+
+				<div class="userSpace-stats">
+					<div class="userSpace-statsGrid">
+						<div class="userSpace-statItem">
+							<span class="userSpace-statLabel">{{ phrase('messages') }}</span>
+							<span class="userSpace-statValue">{$user.message_count|number}</span>
+						</div>
+						<div class="userSpace-statItem">
+							<span class="userSpace-statLabel">{{ phrase('reaction_score') }}</span>
+							<span class="userSpace-statValue">{$user.reaction_score|number}</span>
+						</div>
+						<div class="userSpace-statItem">
+							<span class="userSpace-statLabel">{{ phrase('trophy_points') }}</span>
+							<span class="userSpace-statValue">{$user.trophy_points|number}</span>
+						</div>
+						<div class="userSpace-statItem">
+							<span class="userSpace-statLabel">{{ phrase('olakunlevpn_user_spaces_views') }}</span>
+							<span class="userSpace-statValue">{$space.total_views|number}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<xf:if is="$space.valid_links is not empty">
+	<div class="block userSpace-linksBlock">
+		<div class="block-container">
+			<h3 class="block-header">
+				<xf:fa icon="fa-link" /> {{ phrase('olakunlevpn_user_spaces_featured_links') }}
+			</h3>
+			<div class="block-body">
+				<xf:foreach loop="$space.valid_links" value="$link">
+					<a href="{{ link('u/click', $user, {'idx': $link.index}) }}"
+						class="block-row block-row--clickable block-row--separated userSpace-linkCard"
+						target="_blank" rel="noopener nofollow">
+						<div class="contentRow-figure">
+							<div class="contentRow-figureIcon">
+								<xf:fa icon="{$link.icon}" />
+							</div>
+						</div>
+						<div class="contentRow-main">
+							<h3 class="contentRow-header">{$link.title}</h3>
+							<div class="contentRow-minor">{$link.display_url}</div>
+						</div>
+						<div class="contentRow-extra">
+							<xf:fa icon="fa-arrow-right" />
+						</div>
+					</a>
+				</xf:foreach>
+			</div>
+		</div>
+	</div>
+</xf:if>
+
+<div class="block block--messages"
+	data-xf-init="lightbox inline-mod"
+	data-type="profile_post"
+	data-href="{{ link('inline-mod') }}">
+
+	<div class="block-container">
+		<h3 class="block-header">
+			<xf:fa icon="fa-comments" /> {{ phrase('olakunlevpn_user_spaces_feed_header') }}
+		</h3>
+		<div class="block-body js-replyNewMessageContainer">
+			<xf:if is="$user.canPostOnProfile()">
+				<xf:set var="$firstProfilePost" value="{$profilePosts|first}" />
+				<xf:macro id="profile_post_macros::quick_post"
+					arg-user="{$user}"
+					arg-lastDate="{{ $firstProfilePost.post_date ?: 0 }}"
+					arg-containerSelector="< .js-replyNewMessageContainer"
+					arg-attachmentData="{$attachmentData}" />
+			</xf:if>
+
+			<xf:if is="$profilePosts is not empty">
+				<xf:foreach loop="$profilePosts" value="$profilePost">
+					<xf:macro id="profile_post_macros::{{ $profilePost.message_state == 'deleted' ? 'profile_post_deleted' : 'profile_post' }}"
+						arg-attachmentData="{$profilePostAttachData.{$profilePost.profile_post_id}}"
+						arg-profilePost="{$profilePost}" />
+				</xf:foreach>
+			<xf:else />
+				<div class="block-row js-replyNoMessages">{{ phrase('there_no_messages_on_xs_profile_yet', {'name': $user.username}) }}</div>
+			</xf:if>
+		</div>
+	</div>
+
+	<xf:if is="$total > $perPage">
+		<div class="block-outer block-outer--after">
+			<xf:pagenav
+				page="{$page}" perpage="{$perPage}" total="{$total}"
+				link="u" data="{$user}"
+				wrapperclass="block-outer-main" />
+		</div>
+	</xf:if>
+</div>
+]]></template>
+  <template type="public" title="olakunlevpn_user_spaces.less" version_id="1000070" version_string="1.0.0"><![CDATA[.userSpace-container
+{
+	margin-bottom: @xf-elementSpacer;
+}
+
+.userSpace-banner
+{
+	position: relative;
+	width: 100%;
+	height: 300px;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: @xf-borderRadiusLarge @xf-borderRadiusLarge 0 0;
+	background-color: @xf-contentAltBg;
+
+	@media (max-width: @xf-responsiveMedium)
+	{
+		height: 220px;
+	}
+
+	@media (max-width: @xf-responsiveNarrow)
+	{
+		height: 160px;
+	}
+}
+
+.userSpace-cardWrapper
+{
+	padding: 0 @xf-paddingLarge;
+	margin-top: -85px;
+	position: relative;
+	z-index: 5;
+
+	@media (max-width: @xf-responsiveNarrow)
+	{
+		margin-top: -50px;
+		padding: 0 @xf-paddingMedium;
+	}
+}
+
+.userSpace-card
+{
+	background: @xf-contentBg;
+	border: @xf-borderSize solid @xf-borderColorLight;
+	border-radius: @xf-borderRadiusLarge;
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+	padding: (@xf-paddingLarge * 1.25);
+
+	@media (max-width: @xf-responsiveNarrow)
+	{
+		padding: @xf-paddingMedium;
+	}
+}
+
+.userSpace-cardHeader
+{
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: @xf-paddingLarge;
+	flex-wrap: wrap;
+}
+
+.userSpace-profile
+{
+	display: flex;
+	align-items: center;
+	gap: @xf-paddingLarge;
+
+	@media (max-width: @xf-responsiveNarrow)
+	{
+		gap: @xf-paddingMedium;
+	}
+}
+
+.userSpace-avatarWrapper
+{
+	position: relative;
+	flex-shrink: 0;
+
+	.avatar
+	{
+		width: 80px;
+		height: 80px;
+		border-radius: @xf-borderRadiusMedium;
+		border: 3px solid @xf-contentBg;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		object-fit: cover;
+
+		@media (max-width: @xf-responsiveNarrow)
+		{
+			width: 60px;
+			height: 60px;
+		}
+	}
+}
+
+.userSpace-verifiedBadge
+{
+	position: absolute;
+	bottom: -2px;
+	right: -2px;
+	background: #38bdf8;
+	color: #ffffff;
+	border-radius: 50%;
+	width: 22px;
+	height: 22px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 11px;
+	border: 2px solid @xf-contentBg;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.userSpace-identity
+{
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.userSpace-name
+{
+	margin: 0;
+	padding: 0;
+	font-size: @xf-fontSizeLargest;
+	font-weight: @xf-fontWeightHeavy;
+	color: @xf-textColor;
+	line-height: 1.2;
+
+	@media (max-width: @xf-responsiveNarrow)
+	{
+		font-size: @xf-fontSizeLarger;
+	}
+}
+
+.userSpace-subRow
+{
+	display: flex;
+	align-items: center;
+	gap: @xf-paddingSmall;
+	flex-wrap: wrap;
+	margin-top: 2px;
+}
+
+.userSpace-pill
+{
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 3px 10px;
+	background: @xf-contentAltBg;
+	border: @xf-borderSize solid @xf-borderColorLight;
+	border-radius: 12px;
+	font-size: @xf-fontSizeSmall;
+	color: @xf-textColorMuted;
+	font-weight: @xf-fontWeightNormal;
+}
+
+.userSpace-actions
+{
+	display: flex;
+	align-items: center;
+	gap: @xf-paddingSmall;
+
+	@media (max-width: @xf-responsiveNarrow)
+	{
+		width: 100%;
+		justify-content: flex-start;
+		margin-top: @xf-paddingSmall;
+	}
+}
+
+.userSpace-divider
+{
+	margin: @xf-paddingLarge 0;
+	border: none;
+	border-top: @xf-borderSize solid @xf-borderColorLight;
+	opacity: 0.7;
+}
+
+.userSpace-cardBody
+{
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	gap: @xf-paddingLarge;
+	flex-wrap: wrap;
+}
+
+.userSpace-about
+{
+	flex: 1 1 350px;
+	max-width: 600px;
+}
+
+.userSpace-sectionTitle
+{
+	margin: 0 0 6px 0;
+	padding: 0;
+	font-size: @xf-fontSizeSmall;
+	font-weight: @xf-fontWeightHeavy;
+	letter-spacing: 0.8px;
+	text-transform: uppercase;
+	color: @xf-textColorMuted;
+}
+
+.userSpace-bio
+{
+	font-size: @xf-fontSizeNormal;
+	line-height: 1.5;
+	color: @xf-textColor;
+	word-break: break-word;
+}
+
+.userSpace-stats
+{
+	flex-shrink: 0;
+
+	@media (max-width: @xf-responsiveMedium)
+	{
+		width: 100%;
+	}
+}
+
+.userSpace-statsGrid
+{
+	display: flex;
+	align-items: flex-end;
+	gap: (@xf-paddingLarge * 1.5);
+
+	@media (max-width: @xf-responsiveNarrow)
+	{
+		gap: @xf-paddingMedium;
+		justify-content: space-between;
+		width: 100%;
+	}
+}
+
+.userSpace-statItem
+{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 2px;
+}
+
+.userSpace-statLabel
+{
+	font-size: @xf-fontSizeSmall;
+	color: @xf-textColorMuted;
+	font-weight: @xf-fontWeightNormal;
+	line-height: 1;
+}
+
+.userSpace-statValue
+{
+	font-size: (@xf-fontSizeLarge * 1.25);
+	font-weight: @xf-fontWeightHeavy;
+	color: @xf-textColor;
+	line-height: 1.2;
+}
+
+// Bento Featured Links
+.userSpace-linksBlock
+{
+	margin-top: @xf-elementSpacer;
+}
+
+.userSpace-linkCard
+{
+	display: flex;
+	align-items: center;
+	gap: @xf-paddingMedium;
+	padding: @xf-paddingMedium @xf-paddingLarge;
+	text-decoration: none;
+	transition: all 0.2s ease;
+
+	.contentRow-figure
+	{
+		flex-shrink: 0;
+	}
+
+	.contentRow-figureIcon
+	{
+		width: 44px;
+		height: 44px;
+		border-radius: @xf-borderRadiusMedium;
+		background: @xf-contentAltBg;
+		border: @xf-borderSize solid @xf-borderColorLight;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 20px;
+		color: @xf-textColor;
+		transition: all 0.2s ease;
+	}
+
+	&:hover .contentRow-figureIcon
+	{
+		background: @xf-paletteColor4;
+		color: @xf-paletteColor1;
+	}
+
+	.contentRow-main
+	{
+		flex: 1;
+		min-width: 0;
+	}
+
+	.contentRow-header
+	{
+		font-size: @xf-fontSizeLarge;
+		font-weight: @xf-fontWeightHeavy;
+		margin: 0;
+		color: @xf-textColor;
+	}
+
+	.contentRow-minor
+	{
+		font-size: @xf-fontSizeSmall;
+		color: @xf-textColorMuted;
+		margin-top: 2px;
+	}
+
+	.contentRow-extra
+	{
+		color: @xf-textColorDimmed;
+		font-size: 16px;
+		transition: transform 0.2s ease;
+	}
+
+	&:hover .contentRow-extra
+	{
+		transform: translateX(3px);
+		color: @xf-textColor;
+	}
+}
+]]></template>
+</templates>

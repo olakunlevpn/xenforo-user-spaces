@@ -1,0 +1,9 @@
+{
+    "template": "account_wrapper",
+    "description": "Add My User Space to account wrapper navigation",
+    "execution_order": 10,
+    "enabled": true,
+    "action": "str_replace",
+    "find": "<!--[XF:settings_links:top]-->",
+    "replace": "$0\n<a class=\"blockLink {{ $pageSelected == 'user_space' ? 'is-selected' : '' }}\" href=\"{{ link('account/user-space') }}\">\n\t{{ phrase('olakunlevpn_user_spaces_my_space') }}\n</a>"
+}

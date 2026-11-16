@@ -1,0 +1,26 @@
+{
+    "legacy_addon_id": "",
+    "title": "[Olakunlevpn] User Spaces",
+    "description": "Modern Linktree-style personal and company landing pages for XenForo members with vanity URLs (/@username & /u/username), custom banner, 3 external links, and live profile post stream.",
+    "version_id": 1000070,
+    "version_string": "1.0.0",
+    "dev": "Olakunlevpn",
+    "dev_url": "https://maylancer.org",
+    "faq_url": "",
+    "support_url": "https://maylancer.org/support",
+    "extra_urls": {
+        "Product Information": "https://maylancer.org/products",
+        "docs": "https://maylancer.org/docs/"
+    },
+    "require": {
+        "XF": [
+            2030070,
+            "XenForo 2.3.0+"
+        ],
+        "php": [
+            "8.0.0",
+            "PHP 8.0.0+"
+        ]
+    },
+    "icon": "icon.png"
+}

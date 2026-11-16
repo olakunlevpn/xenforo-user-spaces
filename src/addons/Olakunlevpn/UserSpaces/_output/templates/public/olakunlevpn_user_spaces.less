@@ -1,0 +1,350 @@
+[data-template="olakunlevpn_user_space_view"]
+{
+	.p-breadcrumbs,
+	.p-breadcrumbsWrap,
+	.p-body-header
+	{
+		display: none !important;
+	}
+}
+
+.userSpace-container
+{
+	margin-bottom: @xf-elementSpacer;
+}
+
+.userSpace-banner
+{
+	position: relative;
+	width: 100%;
+	height: 300px;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: @xf-borderRadiusLarge @xf-borderRadiusLarge 0 0;
+	background-color: @xf-contentAltBg;
+
+	@media (max-width: @xf-responsiveMedium)
+	{
+		height: 220px;
+	}
+
+	@media (max-width: @xf-responsiveNarrow)
+	{
+		height: 160px;
+	}
+}
+
+.userSpace-cardWrapper
+{
+	padding: 0 @xf-paddingLarge;
+	margin-top: -85px;
+	position: relative;
+	z-index: 5;
+
+	@media (max-width: @xf-responsiveNarrow)
+	{
+		margin-top: -50px;
+		padding: 0 @xf-paddingMedium;
+	}
+}
+
+.userSpace-card
+{
+	background: @xf-contentBg;
+	border: @xf-borderSize solid @xf-borderColorLight;
+	border-radius: @xf-borderRadiusLarge;
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+	padding: (@xf-paddingLarge * 1.25);
+
+	@media (max-width: @xf-responsiveNarrow)
+	{
+		padding: @xf-paddingMedium;
+	}
+}
+
+.userSpace-cardHeader
+{
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: @xf-paddingLarge;
+	flex-wrap: wrap;
+}
+
+.userSpace-profile
+{
+	display: flex;
+	align-items: center;
+	gap: @xf-paddingLarge;
+
+	@media (max-width: @xf-responsiveNarrow)
+	{
+		gap: @xf-paddingMedium;
+	}
+}
+
+.userSpace-avatarWrapper
+{
+	position: relative;
+	flex-shrink: 0;
+
+	.avatar
+	{
+		width: 80px;
+		height: 80px;
+		border-radius: @xf-borderRadiusMedium;
+		border: 3px solid @xf-contentBg;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		object-fit: cover;
+
+		@media (max-width: @xf-responsiveNarrow)
+		{
+			width: 60px;
+			height: 60px;
+		}
+	}
+}
+
+.userSpace-verifiedBadge
+{
+	position: absolute;
+	bottom: -2px;
+	right: -2px;
+	background: #38bdf8;
+	color: #ffffff;
+	border-radius: 50%;
+	width: 22px;
+	height: 22px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 11px;
+	border: 2px solid @xf-contentBg;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.userSpace-identity
+{
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.userSpace-name
+{
+	margin: 0;
+	padding: 0;
+	font-size: @xf-fontSizeLargest;
+	font-weight: @xf-fontWeightHeavy;
+	color: @xf-textColor;
+	line-height: 1.2;
+
+	@media (max-width: @xf-responsiveNarrow)
+	{
+		font-size: @xf-fontSizeLarger;
+	}
+}
+
+.userSpace-subRow
+{
+	display: flex;
+	align-items: center;
+	gap: @xf-paddingSmall;
+	flex-wrap: wrap;
+	margin-top: 2px;
+}
+
+.userSpace-pill
+{
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 3px 10px;
+	background: @xf-contentAltBg;
+	border: @xf-borderSize solid @xf-borderColorLight;
+	border-radius: 12px;
+	font-size: @xf-fontSizeSmall;
+	color: @xf-textColorMuted;
+	font-weight: @xf-fontWeightNormal;
+}
+
+.userSpace-actions
+{
+	display: flex;
+	align-items: center;
+	gap: @xf-paddingSmall;
+
+	@media (max-width: @xf-responsiveNarrow)
+	{
+		width: 100%;
+		justify-content: flex-start;
+		margin-top: @xf-paddingSmall;
+	}
+}
+
+.userSpace-divider
+{
+	margin: @xf-paddingLarge 0;
+	border: none;
+	border-top: @xf-borderSize solid @xf-borderColorLight;
+	opacity: 0.7;
+}
+
+.userSpace-cardBody
+{
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	gap: @xf-paddingLarge;
+	flex-wrap: wrap;
+}
+
+.userSpace-about
+{
+	flex: 1 1 350px;
+	max-width: 600px;
+}
+
+.userSpace-sectionTitle
+{
+	margin: 0 0 6px 0;
+	padding: 0;
+	font-size: @xf-fontSizeSmall;
+	font-weight: @xf-fontWeightHeavy;
+	letter-spacing: 0.8px;
+	text-transform: uppercase;
+	color: @xf-textColorMuted;
+}
+
+.userSpace-bio
+{
+	font-size: @xf-fontSizeNormal;
+	line-height: 1.5;
+	color: @xf-textColor;
+	word-break: break-word;
+}
+
+.userSpace-stats
+{
+	flex-shrink: 0;
+
+	@media (max-width: @xf-responsiveMedium)
+	{
+		width: 100%;
+	}
+}
+
+.userSpace-statsGrid
+{
+	display: flex;
+	align-items: flex-end;
+	gap: (@xf-paddingLarge * 1.5);
+
+	@media (max-width: @xf-responsiveNarrow)
+	{
+		gap: @xf-paddingMedium;
+		justify-content: space-between;
+		width: 100%;
+	}
+}
+
+.userSpace-statItem
+{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 2px;
+}
+
+.userSpace-statLabel
+{
+	font-size: @xf-fontSizeSmall;
+	color: @xf-textColorMuted;
+	font-weight: @xf-fontWeightNormal;
+	line-height: 1;
+}
+
+.userSpace-statValue
+{
+	font-size: (@xf-fontSizeLarge * 1.25);
+	font-weight: @xf-fontWeightHeavy;
+	color: @xf-textColor;
+	line-height: 1.2;
+}
+
+// Bento Featured Links
+.userSpace-linksBlock
+{
+	margin-top: @xf-elementSpacer;
+}
+
+.userSpace-linkCard
+{
+	display: flex;
+	align-items: center;
+	gap: @xf-paddingMedium;
+	padding: @xf-paddingMedium @xf-paddingLarge;
+	text-decoration: none;
+	transition: all 0.2s ease;
+
+	.contentRow-figure
+	{
+		flex-shrink: 0;
+	}
+
+	.contentRow-figureIcon
+	{
+		width: 44px;
+		height: 44px;
+		border-radius: @xf-borderRadiusMedium;
+		background: @xf-contentAltBg;
+		border: @xf-borderSize solid @xf-borderColorLight;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 20px;
+		color: @xf-textColor;
+		transition: all 0.2s ease;
+	}
+
+	&:hover .contentRow-figureIcon
+	{
+		background: @xf-paletteColor4;
+		color: @xf-paletteColor1;
+	}
+
+	.contentRow-main
+	{
+		flex: 1;
+		min-width: 0;
+	}
+
+	.contentRow-header
+	{
+		font-size: @xf-fontSizeLarge;
+		font-weight: @xf-fontWeightHeavy;
+		margin: 0;
+		color: @xf-textColor;
+	}
+
+	.contentRow-minor
+	{
+		font-size: @xf-fontSizeSmall;
+		color: @xf-textColorMuted;
+		margin-top: 2px;
+	}
+
+	.contentRow-extra
+	{
+		color: @xf-textColorDimmed;
+		font-size: 16px;
+		transition: transform 0.2s ease;
+	}
+
+	&:hover .contentRow-extra
+	{
+		transform: translateX(3px);
+		color: @xf-textColor;
+	}
+}

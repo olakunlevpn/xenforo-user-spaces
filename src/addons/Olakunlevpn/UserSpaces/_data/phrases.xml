@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phrases>
+  <phrase title="olakunlevpn_user_space_not_found" version_id="1000070" version_string="1.0.0"><![CDATA[The requested user space could not be found or is inactive.]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_about_me" version_id="1000070" version_string="1.0.0"><![CDATA[About Me]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_bio" version_id="1000070" version_string="1.0.0"><![CDATA[Bio / Tagline]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_bio_explain" version_id="1000070" version_string="1.0.0"><![CDATA[A short description or status message displayed under your space header.]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_branding_header" version_id="1000070" version_string="1.0.0"><![CDATA[Branding & Imagery]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_current_banner" version_id="1000070" version_string="1.0.0"><![CDATA[Current Banner]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_current_logo" version_id="1000070" version_string="1.0.0"><![CDATA[Current Custom Logo]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_delete_banner" version_id="1000070" version_string="1.0.0"><![CDATA[Delete current banner]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_delete_logo" version_id="1000070" version_string="1.0.0"><![CDATA[Delete custom logo]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_featured_links" version_id="1000070" version_string="1.0.0"><![CDATA[Featured Links]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_feed_header" version_id="1000070" version_string="1.0.0"><![CDATA[Community Updates & Notes]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_general_settings" version_id="1000070" version_string="1.0.0"><![CDATA[General Information]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_link_1_title" version_id="1000070" version_string="1.0.0"><![CDATA[Link 1 Name]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_link_1_url" version_id="1000070" version_string="1.0.0"><![CDATA[Link 1 URL]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_link_2_title" version_id="1000070" version_string="1.0.0"><![CDATA[Link 2 Name]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_link_2_url" version_id="1000070" version_string="1.0.0"><![CDATA[Link 2 URL]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_link_3_title" version_id="1000070" version_string="1.0.0"><![CDATA[Link 3 Name]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_link_3_url" version_id="1000070" version_string="1.0.0"><![CDATA[Link 3 URL]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_link_title_example1" version_id="1000070" version_string="1.0.0"><![CDATA[e.g. My Telegram Channel]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_link_title_example2" version_id="1000070" version_string="1.0.0"><![CDATA[e.g. Follow on Instagram]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_link_title_example3" version_id="1000070" version_string="1.0.0"><![CDATA[e.g. Personal Portfolio]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_links_header" version_id="1000070" version_string="1.0.0"><![CDATA[Featured Links (Up to 3)]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_manage_my_space" version_id="1000070" version_string="1.0.0"><![CDATA[Manage User Space]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_my_space" version_id="1000070" version_string="1.0.0"><![CDATA[My User Space]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_name" version_id="1000070" version_string="1.0.0"><![CDATA[Space Name / Title]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_name_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Leave blank to default to your forum username.]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_public_urls" version_id="1000070" version_string="1.0.0"><![CDATA[Public Space URL]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_public_urls_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Share your personal vanity link with anyone across the web.]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_upload_banner" version_id="1000070" version_string="1.0.0"><![CDATA[Upload Cover Banner]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_upload_banner_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Upload a wide landscape cover photo (JPG, PNG, or WebP). Recommended 1200x350.]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_upload_logo" version_id="1000070" version_string="1.0.0"><![CDATA[Upload Custom Logo]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_upload_logo_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Upload a custom square avatar/brand logo (JPG, PNG, or WebP).]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_use_forum_avatar" version_id="1000070" version_string="1.0.0"><![CDATA[Use forum avatar as space logo]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_use_forum_avatar_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Check this to sync your space logo with your forum avatar.]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_views" version_id="1000070" version_string="1.0.0"><![CDATA[Space Views]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_views_count" version_id="1000070" version_string="1.0.0"><![CDATA[{count} views]]></phrase>
+</phrases>
