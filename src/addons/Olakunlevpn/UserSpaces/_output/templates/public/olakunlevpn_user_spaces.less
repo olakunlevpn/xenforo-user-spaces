@@ -49,6 +49,25 @@
 	}
 }
 
+.userSpace-feedWrapper
+{
+	padding: 0 @xf-paddingLarge;
+	margin-top: (@xf-elementSpacer * 1.5);
+	position: relative;
+	z-index: 2;
+
+	@media (max-width: @xf-responsiveNarrow)
+	{
+		padding: 0 @xf-paddingMedium;
+		margin-top: @xf-elementSpacer;
+	}
+
+	.block
+	{
+		margin: 0;
+	}
+}
+
 .userSpace-cardGroup
 {
 	border-radius: @xf-borderRadiusLarge;
