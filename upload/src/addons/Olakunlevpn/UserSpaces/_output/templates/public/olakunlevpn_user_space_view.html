@@ -1,75 +1,110 @@
 <xf:title>{$space.title}</xf:title>
 <xf:description>{$space.bio}</xf:description>
 
-<xf:css src="member.less" />
+<xf:css src="olakunlevpn_user_spaces.less" />
 <xf:macro id="lightbox_macros::setup" arg-canViewAttachments="{$canViewAttachments}" />
 
-<div class="block">
-	<div class="block-container">
-		<div class="block-body">
-			<div class="memberHeader {{ $space.banner_url ? 'memberHeader--withBanner' : '' }}">
-				<div class="memberHeader-main" style="{{ $space.banner_url ? 'background-image: url(\'' . $space.banner_url . '\');' : '' }}">
-					<div class="memberHeader-mainContent">
-						<span class="memberHeader-avatar">
-							<span class="avatarWrapper">
-								<xf:if is="$space.use_forum_avatar || !$space.logo_url">
-									<xf:avatar user="{$user}" size="l" />
-								<xf:else />
-									<img src="{$space.logo_url}" class="avatar avatar--l" alt="{$space.title}" />
-								</xf:if>
+<div class="userSpace-container">
+	<div class="userSpace-banner" style="{{ $space.banner_url ? 'background-image: url(\'' . $space.banner_url . '\');' : '' }}"></div>
+
+	<div class="userSpace-cardWrapper">
+		<div class="userSpace-card">
+			<div class="userSpace-cardHeader">
+				<div class="userSpace-profile">
+					<div class="userSpace-avatarWrapper">
+						<xf:if is="$space.use_forum_avatar || !$space.logo_url">
+							<xf:avatar user="{$user}" size="l" />
+						<xf:else />
+							<img src="{$space.logo_url}" class="avatar avatar--l" alt="{$space.title}" />
+						</xf:if>
+						<span class="userSpace-verifiedBadge" title="{{ phrase('verified') }}"><xf:fa icon="fa-check" /></span>
+					</div>
+
+					<div class="userSpace-identity">
+						<h1 class="userSpace-name">{$space.title}</h1>
+						<div class="userSpace-subRow">
+							<span class="userSpace-pill">
+								<xf:fa icon="fa-eye" /> {{ phrase('olakunlevpn_user_spaces_views_count', {'count': $space.total_views|number}) }}
 							</span>
-						</span>
-						<div class="memberHeader-content memberHeader-content--info">
-							<xf:if is="$isOwner">
-								<div class="memberHeader-actionTop">
-									<div class="buttonGroup">
-										<xf:button href="{{ link('account/user-space') }}" class="button--link" icon="edit">
-											{{ phrase('edit') }}
-										</xf:button>
-									</div>
+
+							<xf:if is="$space.valid_links is not empty">
+								<div class="userSpace-socialIcons">
+									<xf:foreach loop="$space.valid_links" value="$link">
+										<a href="{{ link('u/click', $user, {'idx': $link.index}) }}"
+											class="userSpace-socialIcon"
+											target="_blank" rel="noopener nofollow"
+											title="{$link.title}">
+											<xf:fa icon="{$link.icon}" />
+										</a>
+									</xf:foreach>
 								</div>
 							</xf:if>
-
-							<h1 class="memberHeader-name">
-								<span class="memberHeader-nameWrapper">
-									{$space.title}
-								</span>
-							</h1>
-
-							<div class="memberHeader-blurbContainer">
-								<div class="memberHeader-blurb">
-									<xf:username user="{$user}" rich="true" />
-								</div>
-
-								<xf:if is="$space.bio">
-									<div class="memberHeader-blurb">
-										{$space.bio|nl2br}
-									</div>
-								</xf:if>
-							</div>
 						</div>
 					</div>
 				</div>
 
-				<div class="memberHeader-content">
-					<div class="memberHeader-stats">
-						<div class="pairJustifier">
-							<dl class="pairs pairs--rows pairs--rows--centered">
-								<dt>{{ phrase('messages') }}</dt>
-								<dd>{$user.message_count|number}</dd>
-							</dl>
-							<dl class="pairs pairs--rows pairs--rows--centered">
-								<dt>{{ phrase('reaction_score') }}</dt>
-								<dd>{$user.reaction_score|number}</dd>
-							</dl>
-							<dl class="pairs pairs--rows pairs--rows--centered">
-								<dt>{{ phrase('trophy_points') }}</dt>
-								<dd>{$user.trophy_points|number}</dd>
-							</dl>
-							<dl class="pairs pairs--rows pairs--rows--centered">
-								<dt>{{ phrase('olakunlevpn_user_spaces_views') }}</dt>
-								<dd>{{ $space.total_views|number }}</dd>
-							</dl>
+				<div class="userSpace-actions">
+					<xf:if is="$isOwner">
+						<xf:button href="{{ link('account/user-space') }}" class="button--cta" icon="edit">
+							{{ phrase('edit') }}
+						</xf:button>
+					<xf:else />
+						<xf:if is="$user.canBeReported()">
+							<xf:button href="{{ link('members/report', $user) }}" class="button--link" overlay="true" title="{{ phrase('report_verb') }}">
+								<xf:fa icon="fa-ellipsis-h" />
+							</xf:button>
+						</xf:if>
+						<xf:if is="$xf.visitor.user_id && $xf.visitor.canStartConversationWith($user)">
+							<xf:button href="{{ link('conversations/add', null, {'to': $user.username}) }}" class="button--default">
+								{{ phrase('message') }}
+							</xf:button>
+						</xf:if>
+						<xf:if is="$xf.visitor.user_id">
+							<xf:if is="$xf.visitor.isFollowing($user)">
+								<xf:button href="{{ link('members/unfollow', $user) }}" class="button--link">
+									{{ phrase('unfollow') }}
+								</xf:button>
+							<xf:else />
+								<xf:button href="{{ link('members/follow', $user) }}" class="button--cta" icon="add">
+									{{ phrase('follow') }}
+								</xf:button>
+							</xf:if>
+						</xf:if>
+					</xf:if>
+				</div>
+			</div>
+
+			<hr class="userSpace-divider" />
+
+			<div class="userSpace-cardBody">
+				<div class="userSpace-about">
+					<h4 class="userSpace-sectionTitle">{{ phrase('about') }}</h4>
+					<div class="userSpace-bio">
+						<xf:if is="$space.bio">
+							{$space.bio|nl2br}
+						<xf:else />
+							<span class="u-muted">{{ phrase('no_additional_information_available') }}</span>
+						</xf:if>
+					</div>
+				</div>
+
+				<div class="userSpace-stats">
+					<div class="userSpace-statsGrid">
+						<div class="userSpace-statItem">
+							<span class="userSpace-statLabel">{{ phrase('messages') }}</span>
+							<span class="userSpace-statValue">{$user.message_count|number}</span>
+						</div>
+						<div class="userSpace-statItem">
+							<span class="userSpace-statLabel">{{ phrase('reaction_score') }}</span>
+							<span class="userSpace-statValue">{$user.reaction_score|number}</span>
+						</div>
+						<div class="userSpace-statItem">
+							<span class="userSpace-statLabel">{{ phrase('trophy_points') }}</span>
+							<span class="userSpace-statValue">{$user.trophy_points|number}</span>
+						</div>
+						<div class="userSpace-statItem">
+							<span class="userSpace-statLabel">{{ phrase('olakunlevpn_user_spaces_views') }}</span>
+							<span class="userSpace-statValue">{$space.total_views|number}</span>
 						</div>
 					</div>
 				</div>
@@ -79,35 +114,29 @@
 </div>
 
 <xf:if is="$space.valid_links is not empty">
-	<div class="block">
+	<div class="block userSpace-linksBlock">
 		<div class="block-container">
 			<h3 class="block-header">
 				<xf:fa icon="fa-link" /> {{ phrase('olakunlevpn_user_spaces_featured_links') }}
 			</h3>
 			<div class="block-body">
 				<xf:foreach loop="$space.valid_links" value="$link">
-					<div class="block-row block-row--clickable block-row--separated fauxBlockLink">
-						<div class="contentRow contentRow--alignMiddle">
-							<div class="contentRow-figure">
-								<span class="avatar avatar--s avatar--default avatar--default--dynamic" style="display: flex; align-items: center; justify-content: center; font-size: 16px;">
-									<xf:fa icon="{$link.icon}" />
-								</span>
-							</div>
-							<div class="contentRow-main">
-								<h3 class="contentRow-header">
-									<a href="{{ link('u/click', $user, {'idx': $link.index}) }}" class="fauxBlockLink-blockLink" target="_blank" rel="noopener nofollow">
-										{$link.title}
-									</a>
-								</h3>
-								<div class="contentRow-minor contentRow-muted">
-									{$link.display_url}
-								</div>
-							</div>
-							<div class="contentRow-extra">
-								<xf:fa icon="fa-external-link-alt" class="u-muted" />
+					<a href="{{ link('u/click', $user, {'idx': $link.index}) }}"
+						class="block-row block-row--clickable block-row--separated userSpace-linkCard"
+						target="_blank" rel="noopener nofollow">
+						<div class="contentRow-figure">
+							<div class="contentRow-figureIcon">
+								<xf:fa icon="{$link.icon}" />
 							</div>
 						</div>
-					</div>
+						<div class="contentRow-main">
+							<h3 class="contentRow-header">{$link.title}</h3>
+							<div class="contentRow-minor">{$link.display_url}</div>
+						</div>
+						<div class="contentRow-extra">
+							<xf:fa icon="fa-arrow-right" />
+						</div>
+					</a>
 				</xf:foreach>
 			</div>
 		</div>
