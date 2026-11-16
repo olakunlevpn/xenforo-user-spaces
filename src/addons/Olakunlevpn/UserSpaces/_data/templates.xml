@@ -104,6 +104,88 @@
 	</div>
 </xf:form>
 ]]></template>
+  <template type="public" title="olakunlevpn_user_space_share" version_id="1000070" version_string="1.0.0"><![CDATA[<xf:title>{{ phrase('olakunlevpn_user_spaces_share_space') }}: {$space.title}</xf:title>
+
+<xf:js src="vendor/kjua/kjua.min.js" />
+<xf:css src="share_controls.less" />
+
+<div class="block">
+	<div class="block-container">
+		<div class="block-body block-row" style="text-align: center; padding: 25px 20px;">
+			<div class="userSpace-qrContainer" style="display: inline-block; padding: 14px; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); border: 1px solid @xf-borderColorLight;">
+				<div id="js-userSpaceQrCode" style="display: flex; align-items: center; justify-content: center; min-width: 170px; min-height: 170px;"></div>
+			</div>
+			
+			<div style="font-size: @xf-fontSizeSmall; color: @xf-textColorMuted; margin: 12px 0 20px 0;">
+				<xf:fa icon="fa-mobile-alt" /> {{ phrase('olakunlevpn_user_spaces_scan_qr_code') }}
+			</div>
+
+			<div style="max-width: 440px; margin: 0 auto; text-align: left;">
+				<xf:macro id="share_page_macros::share_clipboard_input"
+					arg-label="{{ phrase('olakunlevpn_user_spaces_space_url') }}"
+					arg-text="{$vanityUrl}"
+					arg-successText="{{ phrase('copied') }}" />
+			</div>
+
+			<div style="margin-top: 25px; padding-top: 15px; border-top: 1px solid @xf-borderColorLight;">
+				<div class="block-minorHeader" style="margin-bottom: 12px; font-weight: @xf-fontWeightHeavy;">{{ phrase('share_this_content') }}</div>
+				
+				<div class="shareButtons shareButtons--labels" style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+					<a href="https://x.com/intent/tweet?url={$vanityUrl|escape('url')}&amp;text={$space.title|escape('url')}"
+						target="_blank" rel="noopener nofollow"
+						class="shareButtons-button shareButtons-button--brand shareButtons-button--twitter">
+						<xf:fa icon="fab fa-x" />
+						<span>{{ phrase('x_twitter') }}</span>
+					</a>
+					<a href="https://t.me/share/url?url={$vanityUrl|escape('url')}&amp;text={$space.title|escape('url')}"
+						target="_blank" rel="noopener nofollow"
+						class="shareButtons-button shareButtons-button--brand" style="background-color: #24A1DE; color: #ffffff;">
+						<xf:fa icon="fab fa-telegram" />
+						<span>Telegram</span>
+					</a>
+					<a href="https://api.whatsapp.com/send?text={{ ($space.title . ' ' . $vanityUrl)|escape('url') }}"
+						target="_blank" rel="noopener nofollow"
+						class="shareButtons-button shareButtons-button--brand shareButtons-button--whatsApp">
+						<xf:fa icon="fab fa-whatsapp" />
+						<span>{{ phrase('whatsapp') }}</span>
+					</a>
+					<a href="https://reddit.com/submit?url={$vanityUrl|escape('url')}&amp;title={$space.title|escape('url')}"
+						target="_blank" rel="noopener nofollow"
+						class="shareButtons-button shareButtons-button--brand shareButtons-button--reddit">
+						<xf:fa icon="fab fa-reddit-alien" />
+						<span>{{ phrase('reddit') }}</span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<xf:js>
+(function() {
+	function renderQr() {
+		const el = document.querySelector('#js-userSpaceQrCode');
+		if (el && typeof kjua === 'function') {
+			const qr = kjua({
+				text: '{$vanityUrl|escape('js')}',
+				render: 'canvas',
+				size: 170,
+				fill: '#1a1a1a',
+				back: '#ffffff',
+				rounded: 80
+			});
+			el.innerHTML = '';
+			el.appendChild(qr);
+		}
+	}
+	if (typeof kjua === 'function') {
+		renderQr();
+	} else {
+		window.addEventListener('load', renderQr);
+		setTimeout(renderQr, 100);
+	}
+})();
+</xf:js>]]></template>
   <template type="public" title="olakunlevpn_user_space_view" version_id="1000070" version_string="1.0.0"><![CDATA[<xf:title>{$space.title}</xf:title>
 <xf:h1 hidden="true" />
 <xf:if is="$space.bio">
@@ -149,31 +231,55 @@
 				</div>
 
 				<div class="userSpace-actions">
+					<xf:button href="{{ link('u/share', $user) }}"
+						class="button--link userSpace-actionBtn"
+						data-xf-click="overlay"
+						icon="share"
+						title="{{ phrase('olakunlevpn_user_spaces_share_space') }}">
+						<span class="userSpace-actionLabel">{{ phrase('share') }}</span>
+					</xf:button>
+
 					<xf:if is="$isOwner">
-						<xf:button href="{{ link('account/user-space') }}" class="button--cta" icon="edit">
+						<xf:button href="{{ link('account/user-space') }}" class="button--cta userSpace-actionBtn" icon="edit">
 							{{ phrase('edit') }}
 						</xf:button>
 					<xf:else />
-						<xf:if is="$user.canBeReported()">
-							<xf:button href="{{ link('members/report', $user) }}" class="button--link" overlay="true" title="{{ phrase('report_verb') }}">
-								<xf:fa icon="fa-ellipsis-h" />
-							</xf:button>
-						</xf:if>
 						<xf:if is="$xf.visitor.user_id && $xf.visitor.canStartConversationWith($user)">
-							<xf:button href="{{ link('conversations/add', null, {'to': $user.username}) }}" class="button--default">
-								{{ phrase('message') }}
+							<xf:button href="{{ link('conversations/add', null, {'to': $user.username}) }}"
+								class="button--default userSpace-actionBtn"
+								overlay="true"
+								icon="conversation">
+								<span class="userSpace-actionLabel">{{ phrase('message') }}</span>
 							</xf:button>
 						</xf:if>
+
 						<xf:if is="$xf.visitor.user_id">
-							<xf:if is="$xf.visitor.isFollowing($user)">
-								<xf:button href="{{ link('members/unfollow', $user) }}" class="button--link">
-									{{ phrase('unfollow') }}
-								</xf:button>
-							<xf:else />
-								<xf:button href="{{ link('members/follow', $user) }}" class="button--cta" icon="add">
-									{{ phrase('follow') }}
+							<xf:if is="$xf.visitor.canFollowUser($user)">
+								<xf:button href="{{ link('members/follow', $user) }}"
+									class="{{ $xf.visitor.isFollowing($user) ? 'button--link is-following' : 'button--cta' }} userSpace-actionBtn userSpace-followBtn"
+									data-xf-click="switch"
+									data-sk-follow="{{ phrase('follow') }}"
+									data-sk-unfollow="{{ phrase('unfollow') }}"
+									icon="{{ $xf.visitor.isFollowing($user) ? 'confirm' : 'add' }}">
+									<span class="userSpace-actionLabel">{{ $xf.visitor.isFollowing($user) ? phrase('unfollow') : phrase('follow') }}</span>
 								</xf:button>
 							</xf:if>
+						<xf:else />
+							<xf:button href="{{ link('login', null, {'_xfRedirect': $xf.fullUri}) }}"
+								class="button--cta userSpace-actionBtn userSpace-followBtn"
+								data-xf-click="overlay"
+								icon="add">
+								<span class="userSpace-actionLabel">{{ phrase('follow') }}</span>
+							</xf:button>
+						</xf:if>
+
+						<xf:if is="$user.canBeReported()">
+							<xf:button href="{{ link('members/report', $user) }}"
+								class="button--link userSpace-actionBtn"
+								overlay="true"
+								title="{{ phrase('report_verb') }}">
+								<xf:fa icon="fa-ellipsis-h" />
+							</xf:button>
 						</xf:if>
 					</xf:if>
 				</div>
@@ -487,12 +593,32 @@
 	display: flex;
 	align-items: center;
 	gap: @xf-paddingSmall;
+	flex-wrap: wrap;
 
 	@media (max-width: @xf-responsiveNarrow)
 	{
 		width: 100%;
 		justify-content: flex-start;
 		margin-top: @xf-paddingSmall;
+	}
+
+	.userSpace-actionBtn
+	{
+		border-radius: @xf-borderRadiusMedium;
+		font-weight: @xf-fontWeightHeavy;
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+
+	.userSpace-followBtn.is-following
+	{
+		color: @xf-textColorMuted;
+
+		&:hover
+		{
+			color: @xf-paletteColor1;
+		}
 	}
 }
 

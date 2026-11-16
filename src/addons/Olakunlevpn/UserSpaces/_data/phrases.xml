@@ -28,6 +28,9 @@
   <phrase title="olakunlevpn_user_spaces_name_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Leave blank to default to your forum username.]]></phrase>
   <phrase title="olakunlevpn_user_spaces_public_urls" version_id="1000070" version_string="1.0.0"><![CDATA[Public Space URL]]></phrase>
   <phrase title="olakunlevpn_user_spaces_public_urls_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Share your personal vanity link with anyone across the web.]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_scan_qr_code" version_id="1000070" version_string="1.0.0"><![CDATA[Scan with your phone to view this space on mobile]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_share_space" version_id="1000070" version_string="1.0.0"><![CDATA[Share Space]]></phrase>
+  <phrase title="olakunlevpn_user_spaces_space_url" version_id="1000070" version_string="1.0.0"><![CDATA[Vanity URL]]></phrase>
   <phrase title="olakunlevpn_user_spaces_upload_banner" version_id="1000070" version_string="1.0.0"><![CDATA[Upload Cover Banner]]></phrase>
   <phrase title="olakunlevpn_user_spaces_upload_banner_explain" version_id="1000070" version_string="1.0.0"><![CDATA[Upload a wide landscape cover photo (JPG, PNG, or WebP). Recommended 1200x350.]]></phrase>
   <phrase title="olakunlevpn_user_spaces_upload_logo" version_id="1000070" version_string="1.0.0"><![CDATA[Upload Custom Logo]]></phrase>
